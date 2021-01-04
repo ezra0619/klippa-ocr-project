@@ -1,0 +1,27 @@
+
+.container-fluid {
+    padding: 0%;
+}
+
+.image-container {
+    // background-color: #a3d2ca;
+    width: 80%;
+    height: 80%;
+    .login-image {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.col,
+.row {
+    padding: 0%;
+    margin: 0%;
+}
+
+.colors{
+    background-color: #f8f1f1;
+    background-color: #a3d2ca;
+    background-color: #5eaaa8;
+    background-color: #db6400;
+}
