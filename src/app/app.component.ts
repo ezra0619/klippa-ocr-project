@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-receipts-and-invoices-ocr-app';
+  title = 'Klippa-OCR-WEBAPP';
 }

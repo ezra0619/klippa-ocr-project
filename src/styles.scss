@@ -6,4 +6,15 @@
     box-sizing: border-box;
 }
 
-@import "~bootstrap/dist/css/bootstrap.css"
+.main-button-color {
+    background-color: #db6400;
+}
+
+.colors{
+    background-color: #f8f1f1;
+    background-color: #a3d2ca;
+    background-color: #5eaaa8;
+    background-color: #db6400;
+}
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
