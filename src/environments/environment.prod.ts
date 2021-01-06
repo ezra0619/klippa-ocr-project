@@ -8,5 +8,6 @@ export const environment = {
     messagingSenderId: "801097623346",
     appId: "1:801097623346:web:9ff2ad5eecc46ff86f992b",
     measurementId: "G-QFY4BCJNBQ"
-  }
+  },
+  klipaOCRAPIKey: "EtbeyiXY2yZz5qm2cnzPBgaYGon6LIuj"
 };
