@@ -1,0 +1,142 @@
+<div id="ocr-details-form-container">
+    <form [formGroup]="ocrDetaisForm" (ngSubmit)="submit()">
+        <div>
+            <h3>Good *morning,*evening,*afternoon, *First Name</h3>
+        </div>
+        <div class="form-group">
+            
+            <h5>
+                What would you like us to scan for you today?
+            </h5>
+            <div 
+                class="form-check" 
+                *ngFor="let typeOfDocument of typeOfDocuments">
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        [id]="typeOfDocument.id" 
+                        formControlName="documentsType" 
+                        [value]="typeOfDocument.value" />
+                    <label 
+                        class="form-check-label" 
+                        [for]="typeOfDocument.id">
+                            {{typeOfDocument.value}}
+                    </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h5>
+                What template would you like us to use for this specific batch?
+            </h5>
+
+            <div class="form-check" *ngFor="let template of templates">
+                <input 
+                    class="form-check-input" 
+                    type="radio" 
+                    [id]="template.id" 
+                    formControlName="template" 
+                    [value]="template.value">
+                <label 
+                    class="form-check-label" 
+                    [for]="template.id">
+                        {{template.value}}
+                </label>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <h5>
+                What type of PDF text extraction method would you like us to use?
+            </h5>
+
+            <small class="form-text text-muted">
+                If you do not have PDF's to be scanned in this batch, please leave the default option selected.
+            </small>
+
+            <div class="form-check" *ngFor="let pdfExtractionMethod of pdfExtractionMethods">
+                <input 
+                    class="form-check-input" 
+                    type="radio" 
+                    [id]="pdfExtractionMethod.id" 
+                    formControlName="PDFExtractionMethod" 
+                    [value]="pdfExtractionMethod.value">
+                <label 
+                    class="form-check-label" 
+                    [for]="pdfExtractionMethod.id">
+                        {{pdfExtractionMethod.value}}
+                </label>
+                <small class="form-text text-muted">
+                    {{pdfExtractionMethod.info}}
+                </small>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <h5>
+                Please let us know which API key you would like to use for this batch.
+            </h5>
+
+            <input type="text" name="APIKey">
+        </div>
+
+        <div class="form-group">
+
+            <h5>
+                Would you like us to scan a whole folder or individually selected documents?
+            </h5>
+
+            <div 
+                class="form-check" 
+                *ngFor="let documentSelectionType of documentSelectionTypes">
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        [id]="documentSelectionType.id" 
+                        formControlName="docSelectionType" 
+                        [value]="documentSelectionType.value">
+                    <label 
+                        class="form-check-label" 
+                        [for]="documentSelectionType.id">
+                            {{documentSelectionType.value}}
+                    </label>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <h5>
+                Please select the documents you wish to be scanned.
+            </h5>
+            <!-- //Option to select files
+            //specification that multiple files can be selected -->
+            <input type="file" formControlName="filesToBeProcessed" accept=".png,.jpg, .pdf" multiple value="Please select files"/>
+            <!-- <input type="file" (change)="upload($event);" accept=".png,.jpg, .pdf" /> -->
+            <!-- //If the user mentioned that he/she will only scan pdfs -- only leaving pdf option -->
+            <input type="file" accept=".pdf" multiple value="Please select files"/>
+
+            <!-- //Option to select a folder -->
+            <input type="file" formControlName="filesToBeProcessed" webkitdirectory multiple value="Please select folder"/>
+            <!-- <input type="file" (change)="onFolderSelected($event)" webkitdirectory multiple/> -->
+
+        </div>
+
+        <div class="form-group UrlInputFieldContainer">
+            <!-- //Option to add Urls and url inputs -->
+            <h5>
+                Please paste the link/links to the document/documents below.
+            </h5>
+            <div>
+                <input type="url" formControlName="filesToBeProcessed" placeholder="Insert Url here"/>
+                <input type="button"  class="btn btn-info" value="Add Additional URL Field">
+            </div>
+            
+        </div>
+
+        <button type="submit" class="btn btn-success">Begin Scan</button>
+
+    </form>
+</div>

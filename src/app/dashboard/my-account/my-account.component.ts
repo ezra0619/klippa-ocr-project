@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { OCRAPIServiceService } from '../shared/ocr-api-service.service';
+import { OCRAPIServiceService } from '../../shared/ocr-api-service.service';
 
 @Component({
   selector: 'app-my-account',

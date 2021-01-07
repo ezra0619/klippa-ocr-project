@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopNavComponent } from './top-nav.component';
+import { OcrDetailsFormComponent } from './ocr-details-form.component';
 
-describe('TopNavComponent', () => {
-  let component: TopNavComponent;
-  let fixture: ComponentFixture<TopNavComponent>;
+describe('OcrDetailsFormComponent', () => {
+  let component: OcrDetailsFormComponent;
+  let fixture: ComponentFixture<OcrDetailsFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TopNavComponent ]
+      declarations: [ OcrDetailsFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopNavComponent);
+    fixture = TestBed.createComponent(OcrDetailsFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
