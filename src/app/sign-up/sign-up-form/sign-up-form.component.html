@@ -1,29 +1,16 @@
 <div class="card m-3">
-    <h5 class="card-header">Angular 10 Reactive Form Validation</h5>
+    <h5 class="card-header">Create Your Account</h5>
     <div class="card-body">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-row">
-                <div class="form-group col">
-                    <label>Title</label>
-                    <select formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }">
-                        <option value=""></option>
-                        <option value="Mr">Mr</option>
-                        <option value="Mrs">Mrs</option>
-                        <option value="Miss">Miss</option>
-                        <option value="Ms">Ms</option>
-                    </select>
-                    <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-                        <div *ngIf="f.title.errors.required">Title is required</div>
-                    </div>
-                </div>
-                <div class="form-group col-5">
+                <div class="form-group col-6">
                     <label>First Name</label>
                     <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
                     <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
                         <div *ngIf="f.firstName.errors.required">First Name is required</div>
                     </div>
                 </div>
-                <div class="form-group col-5">
+                <div class="form-group col-6">
                     <label>Last Name</label>
                     <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
                     <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
@@ -66,11 +53,6 @@
                         <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input" [ngClass]="{ 'is-invalid': submitted && f.acceptTerms.errors }" />
-                <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
-                <div *ngIf="submitted && f.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
             </div>
             <div class="text-center">
                 <button class="btn btn-primary mr-1">Register</button>
