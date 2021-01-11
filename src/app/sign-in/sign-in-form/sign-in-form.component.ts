@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignInFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(public ngAuthService: NgAuthService) { }
 
   ngOnInit(): void {
   }

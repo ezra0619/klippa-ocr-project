@@ -1,0 +1,39 @@
+<div class="row" id="top-nav-container">
+    <div class="col-2 logoNav-container">
+        <div class="logo-container">
+            <img src="assets/logo_size.jpg" alt="logo" />
+        </div>
+        <div class="side-nav-controls">
+            <button class="hamburger hamburger--spin" type="button" appHamburgerToggle>
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="col-10 user-info-container" *ngIf="ngAuthService.userState as user">
+        <div class="dropdown show avatar-container">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img 
+                class="align-self-start img-thumbnail rounded-circle"
+                src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-avatar.png'}}" 
+                alt="{{user.displayName}}"
+                />
+            </a>
+            
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item btn" (click)="ngAuthService.SignOut()">
+                    Sign Out
+                </a>
+            </div>
+        </div>
+
+            
+        <div class="user-information">
+            <p><strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></p>
+            <p>Email: <strong>{{user.email}}</strong></p>
+        </div>
+    </div>
+
+</div>

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { NgAuthService } from '../shared/ng-auth.service.ts.service';
 
 @Component({
-  selector: 'app-verify-email',
-  templateUrl: './verify-email.component.html',
-  styleUrls: ['./verify-email.component.scss']
+  selector: 'app-top-nav',
+  templateUrl: './top-nav.component.html',
+  styleUrls: ['./top-nav.component.scss']
 })
-export class VerifyEmailComponent implements OnInit {
+export class TopNavComponent implements OnInit {
 
   constructor(public ngAuthService: NgAuthService) { }
 

@@ -24,6 +24,9 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { NgAuthService } from './shared/ng-auth.service.ts.service';
 import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
+import { TopNavComponent } from './top-nav/top-nav.component';
+import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
+
 
 
 @NgModule({
@@ -39,7 +42,9 @@ import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.compone
     SignUpComponent,
     SignUpFormComponent,
     ForgotPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    TopNavComponent,
+    HamburgerToggleDirective
   ],
   imports: [
     BrowserModule,

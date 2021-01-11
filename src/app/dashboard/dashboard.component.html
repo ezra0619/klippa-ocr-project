@@ -1,6 +1,9 @@
 
 <div id="dashboard-container" class="container-fluid vh-100">
-    <div class="row h-100">
+    <div class="row">
+        <app-top-nav class="w-100"></app-top-nav>
+    </div>
+    <div class="row">
         <div class="col-2">
             <!-- this is the side nav -->
             <app-side-nav></app-side-nav>
@@ -8,7 +11,7 @@
         <div class="col-10">
             
             <!-- this is the main information container -->
-            <div id="main-information-container" class="row">
+            <div id="main-information-container">
                 <app-ocr-details-form class="w-100"></app-ocr-details-form>
                 <!-- <app-my-account class="w-100"></app-my-account> -->
             </div>

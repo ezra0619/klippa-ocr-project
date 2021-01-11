@@ -6,8 +6,13 @@
     box-sizing: border-box;
 }
 
-.main-button-color {
-    background-color: #db6400;
+
+.row,
+.col,
+.col-2,
+.col-10 {
+    margin: 0;
+    padding: 0;
 }
 
 .colors{
@@ -18,3 +23,5 @@
 }
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import '~hamburgers/_sass/hamburgers/hamburgers.scss';
+

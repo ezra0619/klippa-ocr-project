@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgAuthService } from '../shared/ng-auth.service.ts.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  constructor() { }
+  constructor(public ngAuthService: NgAuthService) { }
 
   ngOnInit(): void {
   }
