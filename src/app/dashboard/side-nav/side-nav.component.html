@@ -1,8 +1,8 @@
 <div id="side-nav-container">
 
-    <!-- //button to lead to my app-my-account -->
-    <button type="button" class="btn w-100"><i class="bi bi-folder"></i> My Account</button>
-    <!-- //button to lead to settings -->
-    <button type="button" class="btn w-100"><i class="bi bi-gear-fill"></i> Settings</button>
-
+    <div class="nav-buttons">
+        <button [routerLink]="'scan-documents'" class="btn btn-block btn-side-nav"><i class="bi bi-upc-scan"></i> Scan Documents</button>
+        <button [routerLink]="'my-account'" class="btn btn-block btn-side-nav"><i class="bi bi-folder"></i> My Account</button>
+        <button [routerLink] class="btn btn-block btn-side-nav"><i class="bi bi-gear-fill"></i> Settings</button>
+    </div>
 </div>

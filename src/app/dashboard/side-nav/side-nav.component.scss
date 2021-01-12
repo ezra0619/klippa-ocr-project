@@ -4,12 +4,11 @@
     padding-top: 60px;
     border: 1px solid #E6ECF5;
     background-color: white;
-    .logo {
-        text-align: center;
-        padding: 20px;
-        border-bottom: 1px solid #E6ECF5;
+
+    .nav-buttons{
+        padding-top: 20px;
+        .btn-side-nav{
+            padding: 15px 0;
+        }
     }
-
-
-
 }

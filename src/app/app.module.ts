@@ -24,8 +24,8 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { NgAuthService } from './shared/ng-auth.service.ts.service';
 import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
-import { TopNavComponent } from './top-nav/top-nav.component';
 import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
+import { TopNavComponent } from './dashboard/top-nav/top-nav.component';
 
 
 
@@ -33,6 +33,7 @@ import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
   declarations: [
     AppComponent,
     SideNavComponent,
+    TopNavComponent,
     MyAccountComponent,
     SettingsComponent,
     DashboardComponent,
@@ -43,7 +44,6 @@ import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
     SignUpFormComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    TopNavComponent,
     HamburgerToggleDirective
   ],
   imports: [
@@ -60,4 +60,5 @@ import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
   providers: [NgAuthService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 
@@ -85,10 +86,14 @@ export class OcrDetailsFormComponent implements OnInit {
     console.log(this.ocrDetaisForm.value);
   }
   
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
+
+  // testingFireBase(){
+  //   return this.http.put()
+  // }
 
   // addURLInputField(){
 
