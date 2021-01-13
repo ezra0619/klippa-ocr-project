@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MyAccountComponent } from './dashboard/my-account/my-account.component';
 import { OcrDetailsFormComponent } from './dashboard/ocr-details-form/ocr-details-form.component';
+import { OcrFormComponent } from './dashboard/ocr-form/ocr-form.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -16,7 +17,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
     {path: '', redirectTo: 'my-account', pathMatch: 'full'},
     {path: 'my-account', component: MyAccountComponent},
-    {path: 'scan-documents', component: OcrDetailsFormComponent}
+    {path: 'scan-documents', component: OcrFormComponent}
   ]},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'email-verification', component: VerifyEmailComponent}

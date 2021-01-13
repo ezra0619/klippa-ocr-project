@@ -18,7 +18,7 @@ export class OCRAPIServiceService {
     return this.http.post(
       "https://custom-ocr.klippa.com/api/v1/parseDocument?X-Auth-Key=" + this.apikey,
       {
-        "url": "https://2.bp.blogspot.com/_WKGRsB-7x8k/SbEgI9ITUrI/AAAAAAAAAQc/9t9RRTrxglg/w1200-h630-p-k-no-nu/boerenvolk.JPG"
+        url: "https://2.bp.blogspot.com/_WKGRsB-7x8k/SbEgI9ITUrI/AAAAAAAAAQc/9t9RRTrxglg/w1200-h630-p-k-no-nu/boerenvolk.JPG"
       },
       {
         headers: new HttpHeaders({'Content-Type': 'multipart/form-data'})

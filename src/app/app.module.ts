@@ -26,7 +26,17 @@ import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.compone
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
 import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
 import { TopNavComponent } from './dashboard/top-nav/top-nav.component';
+import { OcrFormComponent } from './dashboard/ocr-form/ocr-form.component';
 
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatSliderModule } from '@angular/material/slider';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -44,7 +54,8 @@ import { TopNavComponent } from './dashboard/top-nav/top-nav.component';
     SignUpFormComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    HamburgerToggleDirective
+    HamburgerToggleDirective,
+    OcrFormComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +66,15 @@ import { TopNavComponent } from './dashboard/top-nav/top-nav.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatStepperModule,
+    MatInputModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    MatSliderModule
   ],
   providers: [NgAuthService],
   bootstrap: [AppComponent]
