@@ -1,42 +1,181 @@
-<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-</button> -->
-<mat-vertical-stepper [linear]="isLinear" #stepper>
+<form [formGroup]="ocrForm" (ngSubmit)="submit()">
+  <mat-vertical-stepper [linear]="isLinear" formArrayName="formArray" #stepper>
+
+    <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
+      <ng-template matStepLabel>Document Type</ng-template>
+      <label id="typeOfDocuments">What would you like to scan?</label>
+      <mat-radio-group
+        class="radio-group"
+        formControlName="documentTypeField"
+        >
+        <mat-radio-button 
+          class="radio-button"
+          *ngFor="let typeOfDocument of typeOfDocuments"
+          [value]="typeOfDocument.value" 
+          (click)="setCurrentDocType(typeOfDocument.value)">
+          {{typeOfDocument.value}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <button type="button" mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    
+    <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
+      <ng-template matStepLabel>Template</ng-template>
+      <label id="templates">What would you like to scan?</label>
+      <mat-radio-group
+        class="radio-group"
+        formControlName="templateField"
+        >
+        <mat-radio-button 
+          class="radio-button"
+          *ngFor="let template of templates"
+          [value]="template.value"
+          (click)="setTemplate(template.value)">
+          {{template.value}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <button type="button" mat-button matStepperPrevious>Back</button>
+        <button type="button" mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
+      <ng-template matStepLabel>PDF Scan Method</ng-template>
+      <label id="pdfExtractionMethods">Please choose PDF extraction method.</label>
+      <mat-radio-group
+        class="radio-group"
+        formControlName="pdfExtractionMethodsField"
+        >
+        <mat-radio-button 
+          class="radio-button"
+          *ngFor="let pdfExtractionMethod of pdfExtractionMethods"
+          [value]="pdfExtractionMethod.value">
+          {{pdfExtractionMethod.value}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <button type="button" mat-button matStepperPrevious>Back</button>
+        <button type="button" mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
+        <ng-template matStepLabel>API Key</ng-template>
+        <mat-form-field>
+          <mat-label>API Key</mat-label>
+          <input matInput placeholder="API Key" formControlName="apiKeyField" required>
+        </mat-form-field>
+        <div>
+          <button type="button" mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+
+    <!-- ///What kind of uploads should be allowed per the above selection -->
+
+    <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
+      <ng-template matStepLabel>File or Folder</ng-template>
+      <label id="fileOrFolder">Would you like to upload individual files or a whole folder?</label>
+      <mat-radio-group
+        class="radio-group"
+        formControlName="fileOrFolderField"
+        >
+        <mat-radio-button 
+          class="radio-button"
+          *ngFor="let filesOrFolderType of filesOrFolder"
+          [value]="filesOrFolderType.value"
+          (click)="setFileOrFolder(filesOrFolderType.value)">
+          {{filesOrFolderType.value}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div>
+        <button type="button" mat-button matStepperPrevious>Back</button>
+        <button type="button" mat-button matStepperNext>Next</button>
+      </div>
+  </mat-step>
+
+    <mat-step formGroupName="5" [stepControl]="formArray?.get([5])">
+      
+      <div>
+        <ng-template matStepLabel>File Upload</ng-template>
+        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
+        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+
+        <div>
+          <button type="button" mat-button matStepperNext>Next</button>
+        </div>
+      </div>
+
+      <div class="urlFieldContainer">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <mat-form-field *ngFor="let i of [].constructor(nrOfInputFields)">
+          <mat-label>URL</mat-label>
+          <input matInput placeholder="URL" formControlName="filesUpload" required>
+        </mat-form-field>
+        <div>
+          <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
+          <button *ngIf="nrOfInputFields > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
+          <button type="button" mat-button matStepperNext>Next</button>
+        </div>
+      </div>
+
+      <!-- <form [formGroup]="filesUploadGroup">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
+        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+
+      <form [formGroup]="filesUploadGroup">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
+        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+
+      <form [formGroup]="filesUploadGroup">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
+        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+
+      <form [formGroup]="filesUploadGroup">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
+        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+          <button mat-button matStepperPrevious>Back</button>
+        </div>
+      </form> -->
+    </mat-step>
 
 
-  <mat-step [stepControl]="firstFormGroup" state="home">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-      </mat-form-field>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>Everything seems in order.</p>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button type="button" mat-button matStepperPrevious>Back</button>
+        <button type="button" mat-button (click)="stepper.reset()">Reset</button>
+        <button type="submit" mat-button>Scan</button>
       </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
-</mat-vertical-stepper>
+    </mat-step>
+  </mat-vertical-stepper>
+
+|</form>
+
+
 

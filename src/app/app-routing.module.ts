@@ -17,7 +17,8 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
     {path: '', redirectTo: 'my-account', pathMatch: 'full'},
     {path: 'my-account', component: MyAccountComponent},
-    {path: 'scan-documents', component: OcrFormComponent}
+    {path: 'scan-documents', component: OcrFormComponent},
+    {path: 'tempForm', component: OcrDetailsFormComponent}
   ]},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'email-verification', component: VerifyEmailComponent}
