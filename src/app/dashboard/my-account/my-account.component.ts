@@ -20,7 +20,7 @@ export class MyAccountComponent implements OnInit {
 
   constructor(private afStorage: AngularFireStorage,
               private afDatabase: AngularFirestore,
-              private OCRService: OCRAPIServiceService) { 
+             ) { 
 
   }
 

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OCRAPIServiceService } from './ocr-api-service.service';
+import { OcrApiService } from './ocr-api.service';
 
-describe('OCRAPIServiceService', () => {
-  let service: OCRAPIServiceService;
+describe('OcrApiService', () => {
+  let service: OcrApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(OCRAPIServiceService);
+    service = TestBed.inject(OcrApiService);
   });
 
   it('should be created', () => {

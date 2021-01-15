@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class OCRAPIServiceService {
+export class OcrApiService {
 
   constructor(private http: HttpClient) { }
 
@@ -29,5 +29,4 @@ export class OCRAPIServiceService {
     )
       //https://custom-ocr.klippa.com/api/v1?X-Auth-Key=key/parseDocument
   }
-
 }

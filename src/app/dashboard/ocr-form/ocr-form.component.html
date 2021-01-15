@@ -1,4 +1,4 @@
-<form [formGroup]="ocrForm" (ngSubmit)="submit()">
+<form [formGroup]="ocrForm" (ngSubmit)="onSubmit()">
   <mat-vertical-stepper [linear]="isLinear" formArrayName="formArray" #stepper>
 
     <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
@@ -52,7 +52,8 @@
         <mat-radio-button 
           class="radio-button"
           *ngFor="let pdfExtractionMethod of pdfExtractionMethods"
-          [value]="pdfExtractionMethod.value">
+          [value]="pdfExtractionMethod.value"
+          (click)="setPDFScanMethod(pdfExtractionMethod.value)">
           {{pdfExtractionMethod.value}}
         </mat-radio-button>
       </mat-radio-group>
@@ -66,101 +67,84 @@
         <ng-template matStepLabel>API Key</ng-template>
         <mat-form-field>
           <mat-label>API Key</mat-label>
-          <input matInput placeholder="API Key" formControlName="apiKeyField" required>
+          <input 
+            matInput 
+            placeholder="API Key" 
+            formControlName="apiKeyField" 
+            required>
         </mat-form-field>
         <div>
           <button type="button" mat-button matStepperNext>Next</button>
         </div>
     </mat-step>
 
-    <!-- ///What kind of uploads should be allowed per the above selection -->
-
     <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
-      <ng-template matStepLabel>File or Folder</ng-template>
-      <label id="fileOrFolder">Would you like to upload individual files or a whole folder?</label>
-      <mat-radio-group
-        class="radio-group"
-        formControlName="fileOrFolderField"
-        >
-        <mat-radio-button 
-          class="radio-button"
-          *ngFor="let filesOrFolderType of filesOrFolder"
-          [value]="filesOrFolderType.value"
-          (click)="setFileOrFolder(filesOrFolderType.value)">
-          {{filesOrFolderType.value}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div>
-        <button type="button" mat-button matStepperPrevious>Back</button>
-        <button type="button" mat-button matStepperNext>Next</button>
-      </div>
-  </mat-step>
-
-    <mat-step formGroupName="5" [stepControl]="formArray?.get([5])">
       
-      <div>
-        <ng-template matStepLabel>File Upload</ng-template>
-        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
-        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
+      <!-- //dummy label until values are mentioned by user -->
+      <ng-template 
+        *ngIf="currentFormValuesDinamic.showFileUpload === false 
+          && currentFormValuesDinamic.showUrlUpload === false" matStepLabel>
+          File Upload
+        </ng-template>
 
+      <div *ngIf="currentFormValuesDinamic.showFileUpload === true">
+        <ng-template matStepLabel>File Upload</ng-template>
+        <div>
+          <h5>Folder/s Upload</h5>
+          <input type="file" 
+          formControlName="filesUpload" 
+          webkitdirectory 
+          multiple 
+          value="Please select folder"
+          (change)="detectFiles($event)"
+          />
+        </div>
+        
+        <div>
+          <h5>File/s Upload</h5>
+          <input 
+          type="file" 
+          formControlName="filesUpload" 
+          [accept]="currentFormValuesDinamic.acceptedExtension" 
+          multiple 
+          value="Please select files"
+          (change)="detectFiles($event)"/>
+        </div>
+
+        <div *ngIf="currentFormValuesDinamic.filesUploaded.length >= 1">
+          <p>Current extensions accepted: {{currentFormValuesDinamic.acceptedExtension}}</p>
+          <p>Current valid files selected:</p>
+          <p *ngFor="let validFile of currentFormValuesDinamic.filesUploaded">
+            {{validFile.name}}
+          </p>
+        </div>
+        
         <div>
           <button type="button" mat-button matStepperNext>Next</button>
         </div>
       </div>
 
-      <div class="urlFieldContainer">
+      <div *ngIf="currentFormValuesDinamic.showUrlUpload === true" class="urlFieldContainer">
         <ng-template matStepLabel>File Upload</ng-template>
-        <mat-form-field *ngFor="let i of [].constructor(nrOfInputFields)">
+        <mat-form-field 
+          *ngFor="let item of currentFormValuesDinamic.urlUploaded; let i = index">
           <mat-label>URL</mat-label>
-          <input matInput placeholder="URL" formControlName="filesUpload" required>
+          <input 
+            type="text"
+            matInput 
+            placeholder="URL" 
+            formControlName="filesUpload" 
+            (change)="detectURLs($event, i)"
+            [value]="item"
+            required>
         </mat-form-field>
         <div>
           <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
-          <button *ngIf="nrOfInputFields > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
+          <button *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
           <button type="button" mat-button matStepperNext>Next</button>
         </div>
       </div>
 
-      <!-- <form [formGroup]="filesUploadGroup">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
-        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
-
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-
-      <form [formGroup]="filesUploadGroup">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
-        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
-
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-
-      <form [formGroup]="filesUploadGroup">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
-        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
-
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-
-      <form [formGroup]="filesUploadGroup">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <input type="file" formControlName="filesUpload" webkitdirectory multiple value="Please select folder"/>
-        <input type="file" formControlName="filesUpload" accept=".png, .jpg, .pdf" multiple value="Please select files"/>
-
-        <div>
-          <button mat-button matStepperNext>Next</button>
-          <button mat-button matStepperPrevious>Back</button>
-        </div>
-      </form> -->
     </mat-step>
 
 
@@ -176,6 +160,10 @@
   </mat-vertical-stepper>
 
 |</form>
+
+<!-- <div>
+  <button class="btn btn-primary" (click)="randomButton()"></button>
+</div> -->
 
 
 
