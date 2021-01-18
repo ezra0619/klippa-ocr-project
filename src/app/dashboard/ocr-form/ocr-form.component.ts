@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import { OCRAPIServiceService } from 'src/app/shared/ocr-api-service.service';
+import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
 import { OcrApiService } from 'src/app/shared/ocr-api.service';
 
 
@@ -21,7 +23,10 @@ export class OcrFormComponent implements OnInit {
   pdfExtractionMethodsGroup: FormGroup;
   apiKeyGroup: FormGroup;
   filesUploadGroup: FormGroup;
-
+  currentUserID: string;
+  basePath: string;
+  downloadableURL: string = '';
+  task: AngularFireUploadTask;
   
   currentFormValuesDinamic: {
     typeOfDocumentsValue: string, //Document/s or URL/s
@@ -86,12 +91,28 @@ export class OcrFormComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private ocrApiService: OcrApiService,
-              private afDatabase: AngularFirestore) {
-
+              private afDatabase: AngularFirestore,
+              public ngAuthService: NgAuthService,
+              private afStorage: AngularFireStorage) {
+          
   }
 
   ngOnInit() {
 
+    this.ngAuthService.afAuth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        this.currentUserID = user.uid;
+        this.basePath = '/' + this.currentUserID + '/files';
+
+        // testing purposes
+        console.log("user is signed in");
+        console.log(user.uid);
+
+      } else {
+        // No user is signed in.
+      }
+    });
     this.ocrForm = this.formBuilder.group({
       formArray: this.formBuilder.array([
         this.documentTypeGroup = this.formBuilder.group({
@@ -208,6 +229,15 @@ export class OcrFormComponent implements OnInit {
 
   }
 
+  async getFileUrl(file: File){
+      // const file = event.target.files[0];
+
+      const filePath = `${this.basePath}/${file.name}`;
+      this.task = this.afStorage.upload(filePath, file);
+  
+      (await this.task).ref.getDownloadURL().then(url => {this.downloadableURL = url; console.log(this.downloadableURL)});
+  }
+
   onSubmit() {
 
     console.log(this.ocrForm.value.formArray[0].documentTypeField);
@@ -227,13 +257,17 @@ export class OcrFormComponent implements OnInit {
     var typeOfTemplate = this.ocrForm.value.formArray[1].templateField;
     var pdfExtractionMethod = this.ocrForm.value.formArray[2].pdfExtractionMethodsField;
     var APIkey = this.ocrForm.value.formArray[3].apiKeyField;
-    var filesUploaded = this.currentFormValuesDinamic.filesUploaded;
+
+    var filesUploaded = this.currentFormValuesDinamic.filesUploaded[0];
+    // var filesUploaded = this.currentFormValuesDinamic.filesUploaded;
+    
+    // var urlUploaded = this.currentFormValuesDinamic.urlUploaded[0];
     var urlUploaded = this.currentFormValuesDinamic.urlUploaded;
+
     var scenarioUrl = this.currentFormValuesDinamic.showUrlUpload;
     var scenarioFile = this.currentFormValuesDinamic.showFileUpload;
-
-    //temp var for testing purposes
-    var currentUrl = this.currentFormValuesDinamic.showUrlUpload[0];
+    var currentUser: string = this.currentUserID;
+    // var tempUrl = this.ocrForm.get('filesUpload').value;
 
     ///
     console.log(
@@ -244,46 +278,231 @@ export class OcrFormComponent implements OnInit {
       filesUploaded,
       urlUploaded,
       scenarioUrl,
-      scenarioFile
+      scenarioFile,
+      currentUser
     )
     //Scenarios
     // 1 - user has URLs
         //we dont to convert anything for the api request
-        // template: string, pdfTextExtractionMethod: string, apiKey: string, url: string
+        //BELOW WORKS
       if(scenarioUrl === true && scenarioFile === false){
-        this.ocrApiService.readDocumentOCR(typeOfTemplate, pdfExtractionMethod, APIkey, currentUrl).subscribe( responseData => {
-          console.log(responseData);
-          //if successfull put it to the database
-          var requestId: string = Math.random().toString(36).substring(2);
-          var dbUser = this.afDatabase.firestore.collection("users").doc("IDXfLrL7EBZkSuiEeZeQWIqOVdo1");
 
-          dbUser.set({
-            scannedDocs: {
-              requestId: {
-                  url: currentUrl,
-                  data: responseData
-                }
-              }
-            })
-            //solve this with a random ID 
-            //https://stackoverflow.com/questions/38202763/how-to-know-the-random-id-given-to-a-firebase-data/41462470
+        // for(let i=0;i<urlUploaded.length;i++){
 
-        }, error => {
-          console.log(error)
-        })
+        //   console.log(urlUploaded[i]);
+        //     // the below is working
+        //     this.ocrApiService.readDocumentOCR(pdfExtractionMethod, APIkey, urlUploaded[i]).subscribe( responseData => {
+        //       console.log(responseData);
+
+        //       var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+
+        //       dbUser.set({
+        //         url: urlUploaded,
+        //         data: responseData
+        //       })
+        //     }, error => {
+        //       console.log(error)
+        //     })
+
+        // }
+        // the below is working
+        // this.ocrApiService.readDocumentOCR(pdfExtractionMethod, APIkey, urlUploaded).subscribe( responseData => {
+        //   console.log(responseData);
+
+        //   var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+
+        //   dbUser.set({
+        //     url: urlUploaded,
+        //     data: responseData
+        //   })
+        // }, error => {
+        //   console.log(error)
+        // })
       }
 
     // 2 -- user has files
         //we have to convert the files into links
 
       if(scenarioUrl === false && scenarioFile === true){
-        //for now nothing
+        //we get the information in format file
+        //we need to uplaod them to Firebase and then ger the url
+        //and then for each url created send a request to api
+
+        this.getFileUrl(filesUploaded).then(
+          //get file and then set it to the api and get response
+        )
       }
 
 
   }
 
-  randomButton(){
-    console.log(Math.random().toString(36).substring(2));
-  }
+  // randomButton(){
+  //   console.log(Math.random().toString(36).substring(2));
+  // }
 }
+
+
+// var dbUser = this.afDatabase.firestore.collection("users").doc(currentUser).collection('scannedDocs').doc();
+
+//         dbUser.set({
+//           url: urlUploaded,
+//           date: new Date(),
+//           data: {
+//                   "result": "now",
+//                   "data": {
+//                       "document_type": "receipt",
+//                       "amount": 655,
+//                       "amount_change": 1360,
+//                       "vatamount": 0,
+//                       "amountexvat": 642,
+//                       "currency": "EUR",
+//                       "date": "",
+//                       "purchasedate": "",
+//                       "purchasetime": "",
+//                       "vatitems": [],
+//                       "vat_context": "",
+//                       "lines": [
+//                           {
+//                               "description": "",
+//                               "lineitems": [
+//                                   {
+//                                       "title": "ELSTAR",
+//                                       "description": "",
+//                                       "amount": 199,
+//                                       "amount_each": 199,
+//                                       "amount_ex_vat": 199,
+//                                       "vat_amount": 0,
+//                                       "vat_percentage": 0,
+//                                       "quantity": 1,
+//                                       "sku": "",
+//                                       "vat_code": ""
+//                                   },
+//                                   {
+//                                       "title": "BANANEN",
+//                                       "description": "",
+//                                       "amount": 201,
+//                                       "amount_each": 201,
+//                                       "amount_ex_vat": 201,
+//                                       "vat_amount": 0,
+//                                       "vat_percentage": 0,
+//                                       "quantity": 1,
+//                                       "sku": "",
+//                                       "vat_code": ""
+//                                   },
+//                                   {
+//                                       "title": "AH LAMP",
+//                                       "description": "",
+//                                       "amount": 89,
+//                                       "amount_each": 89,
+//                                       "amount_ex_vat": 89,
+//                                       "vat_amount": 0,
+//                                       "vat_percentage": 0,
+//                                       "quantity": 1,
+//                                       "sku": "",
+//                                       "vat_code": ""
+//                                   },
+//                                   {
+//                                       "title": "AH LAMP",
+//                                       "description": "",
+//                                       "amount": 89,
+//                                       "amount_each": 89,
+//                                       "amount_ex_vat": 89,
+//                                       "vat_amount": 0,
+//                                       "vat_percentage": 0,
+//                                       "quantity": 1,
+//                                       "sku": "",
+//                                       "vat_code": ""
+//                                   },
+//                                   {
+//                                       "title": "BOERENVOLK",
+//                                       "description": "",
+//                                       "amount": 64,
+//                                       "amount_each": 64,
+//                                       "amount_ex_vat": 64,
+//                                       "vat_amount": 0,
+//                                       "vat_percentage": 0,
+//                                       "quantity": 1,
+//                                       "sku": "",
+//                                       "vat_code": ""
+//                                   }
+//                               ]
+//                           }
+//                       ],
+//                       "paymentmethod": "cash",
+//                       "payment_auth_code": "",
+//                       "payment_card_number": "",
+//                       "payment_card_account_number": "",
+//                       "payment_card_bank": "",
+//                       "payment_card_issuer": "",
+//                       "payment_due_date": "",
+//                       "terminal_number": "",
+//                       "document_subject": "",
+//                       "package_number": "",
+//                       "invoice_number": "",
+//                       "invoice_type": "",
+//                       "receipt_number": "",
+//                       "shop_number": "",
+//                       "transaction_number": "",
+//                       "transaction_reference": "",
+//                       "order_number": "",
+//                       "table_number": "",
+//                       "table_group": "",
+//                       "server": "",
+//                       "merchant_name": "Albert Heijn",
+//                       "merchant_id": "",
+//                       "merchant_coc_number": "",
+//                       "merchant_vat_number": "",
+//                       "merchant_bank_account_number": "",
+//                       "merchant_bank_account_number_bic": "",
+//                       "merchant_chain_liability_bank_account_number": "",
+//                       "merchant_chain_liability_amount": 0,
+//                       "merchant_bank_domestic_account_number": "",
+//                       "merchant_bank_domestic_bank_code": "",
+//                       "merchant_website": "",
+//                       "merchant_email": "",
+//                       "merchant_address": "",
+//                       "merchant_street_name": "",
+//                       "merchant_house_number": "",
+//                       "merchant_zipcode": "",
+//                       "merchant_city": "",
+//                       "merchant_municipality": "",
+//                       "merchant_province": "",
+//                       "merchant_country": "",
+//                       "merchant_country_code": "NL",
+//                       "merchant_phone": "0503131800",
+//                       "merchant_main_activity_code": "",
+//                       "customer_name": "",
+//                       "customer_number": "",
+//                       "customer_reference": "",
+//                       "customer_address": "",
+//                       "customer_street_name": "",
+//                       "customer_house_number": "",
+//                       "customer_zipcode": "",
+//                       "customer_city": "",
+//                       "customer_municipality": "",
+//                       "customer_province": "",
+//                       "customer_country": "",
+//                       "customer_phone": "",
+//                       "customer_vat_number": "",
+//                       "customer_coc_number": "",
+//                       "customer_bank_account_number": "",
+//                       "customer_bank_account_number_bic": "",
+//                       "customer_website": "",
+//                       "customer_email": "",
+//                       "payment_slip_code": "",
+//                       "payment_slip_reference_number": "",
+//                       "payment_slip_customer_number": "",
+//                       "document_language": "NL",
+//                       "matched_keywords": null,
+//                       "matched_lineitems": null,
+//                       "matched_purchase_order_id": "",
+//                       "barcodes": null,
+//                       "hash": "",
+//                       "hash_duplicate": false,
+//                       "raw_text": "           ALBERT HEIJN\n           Brugstraat 14\n         tel. 050-3131800\n                            EUR\n       ELSTAR              1,99\n       BANANEN              2,01\n       1,190kg EUR 1,69/kg\n       AH LAMP              0,89\n       AH LAMP              0,89\n       BOERENVOLK           0,64\n       SUBTOTAAL            6,42\nTOTAAL                  6,42\n       CONTANT             20,00\n       TERUG               13,60\nTOTAAL ZAKJES           0"
+//                   },
+//                   "request_id": "Krk22ffdDuEgH7OH7V3l8oBEQhk7Ua91"
+//                 }
+
+            
+//           })
