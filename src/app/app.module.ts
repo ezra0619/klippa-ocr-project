@@ -38,6 +38,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DocTemplateComponent } from './doc-template/doc-template.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ForgotPasswordComponent,
     VerifyEmailComponent,
     HamburgerToggleDirective,
-    OcrFormComponent
+    OcrFormComponent,
+    DocTemplateComponent
   ],
   imports: [
     BrowserModule,

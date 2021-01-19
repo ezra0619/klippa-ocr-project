@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
-import { OcrApiService } from 'src/app/shared/ocr-api.service';
+import { OcrParseDocDefaultService } from 'src/app/shared/ocr-parse-doc-default.service';
+import { OcrParseDocStructuredPDFService } from 'src/app/shared/ocr-parse-doc-structured-pdf.service';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class OcrFormComponent implements OnInit {
   basePath: string;
   downloadableURL: string = '';
   task: AngularFireUploadTask;
+
+  ref: AngularFireStorageReference;
   
   currentFormValuesDinamic: {
     typeOfDocumentsValue: string, //Document/s or URL/s
@@ -90,7 +93,8 @@ export class OcrFormComponent implements OnInit {
   get formArray(): AbstractControl | null { return this.ocrForm.get('formArray'); }
 
   constructor(private formBuilder: FormBuilder,
-              private ocrApiService: OcrApiService,
+              private ocrParseDocDefault: OcrParseDocDefaultService,
+              private ocrParseDocStructuredPDF: OcrParseDocStructuredPDFService,
               private afDatabase: AngularFirestore,
               public ngAuthService: NgAuthService,
               private afStorage: AngularFireStorage) {
@@ -98,6 +102,8 @@ export class OcrFormComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    console.log(btoa("password"));
 
     this.ngAuthService.afAuth.onAuthStateChanged((user) => {
       if (user) {
@@ -113,6 +119,7 @@ export class OcrFormComponent implements OnInit {
         // No user is signed in.
       }
     });
+
     this.ocrForm = this.formBuilder.group({
       formArray: this.formBuilder.array([
         this.documentTypeGroup = this.formBuilder.group({
@@ -229,37 +236,29 @@ export class OcrFormComponent implements OnInit {
 
   }
 
-  async getFileUrl(file: File){
-      // const file = event.target.files[0];
+  async convertFileToLink(file: File){
 
-      const filePath = `${this.basePath}/${file.name}`;
-      this.task = this.afStorage.upload(filePath, file);
-  
-      (await this.task).ref.getDownloadURL().then(url => {this.downloadableURL = url; console.log(this.downloadableURL)});
+    const filePath = `${this.basePath}/${file.name}`;
+    this.ref = this.afStorage.ref(filePath);
+    this.task = this.ref.put(file);
+
+    return (await this.task).ref.getDownloadURL()
+
+    // (await this.task).ref.getDownloadURL().then(url => console.log(url))
+
+    // const url = this.ref.getDownloadURL();
+    // console.log(url);
   }
 
   onSubmit() {
-
-    console.log(this.ocrForm.value.formArray[0].documentTypeField);
-    //the number of urls or files will 
-    //determine how many requests will be sent to the API
-    //problem - only the last file/url is registered 
-    //== to change validators
-    // console.log(this.ocrForm.value);
-    // console.log(this.currentFormValuesDinamic.urlUploaded)
-
-    //on submit - reset form
-    //maybe do restrict the user from going back??
-    //or clear values if the user goes back to change anything
-    // formArray[0].documentTypeField
 
     var typeOfDocuments = this.ocrForm.value.formArray[0].documentTypeField;
     var typeOfTemplate = this.ocrForm.value.formArray[1].templateField;
     var pdfExtractionMethod = this.ocrForm.value.formArray[2].pdfExtractionMethodsField;
     var APIkey = this.ocrForm.value.formArray[3].apiKeyField;
 
-    var filesUploaded = this.currentFormValuesDinamic.filesUploaded[0];
-    // var filesUploaded = this.currentFormValuesDinamic.filesUploaded;
+    // var filesUploaded = this.currentFormValuesDinamic.filesUploaded[0];
+    var filesUploaded = this.currentFormValuesDinamic.filesUploaded;
     
     // var urlUploaded = this.currentFormValuesDinamic.urlUploaded[0];
     var urlUploaded = this.currentFormValuesDinamic.urlUploaded;
@@ -267,9 +266,14 @@ export class OcrFormComponent implements OnInit {
     var scenarioUrl = this.currentFormValuesDinamic.showUrlUpload;
     var scenarioFile = this.currentFormValuesDinamic.showFileUpload;
     var currentUser: string = this.currentUserID;
-    // var tempUrl = this.ocrForm.get('filesUpload').value;
 
-    ///
+    // var ocrParseMethod: string;
+    if (typeOfTemplate === "Financial Document (.png, .jpg, .pdf)"){
+
+    }else if (typeOfTemplate === "Structured PDF (.pdf)"){
+
+    }
+
     console.log(
       typeOfDocuments,
       typeOfTemplate,
@@ -281,30 +285,134 @@ export class OcrFormComponent implements OnInit {
       scenarioFile,
       currentUser
     )
-    //Scenarios
-    // 1 - user has URLs
-        //we dont to convert anything for the api request
-        //BELOW WORKS
+
+    //Scenario 1 - DEFAULT PARSING
+    if (typeOfTemplate === "Financial Document (.png, .jpg, .pdf)"){
+      // 1.2 - user has URLs
+      //we dont need to convert anything for the api request
+      //simply send a request to the api for each link
+
       if(scenarioUrl === true && scenarioFile === false){
 
-        // for(let i=0;i<urlUploaded.length;i++){
+        for(let i=0;i<urlUploaded.length;i++){
 
-        //   console.log(urlUploaded[i]);
-        //     // the below is working
-        //     this.ocrApiService.readDocumentOCR(pdfExtractionMethod, APIkey, urlUploaded[i]).subscribe( responseData => {
-        //       console.log(responseData);
+          console.log(urlUploaded[i]);
+            // the below is working
+            this.ocrParseDocDefault.readDocumentOCR(pdfExtractionMethod, APIkey, urlUploaded[i]).subscribe( responseData => {
+              console.log(responseData);
 
-        //       var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+              var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
 
-        //       dbUser.set({
-        //         url: urlUploaded,
-        //         data: responseData
-        //       })
-        //     }, error => {
-        //       console.log(error)
-        //     })
+              dbUser.set({
+                url: urlUploaded,
+                date: new Date(),
+                data: responseData
+              })
+            }, error => {
+              console.log(error)
+            })
+        }
 
-        // }
+      }
+
+      // 1.2 -- user has files
+      //we first have to convert the files into links
+      //then for each link generated by uploading the files to storage, we send an api request
+
+      if(scenarioUrl === false && scenarioFile === true){
+
+        for(let i=0;i<filesUploaded.length;i++){
+
+          this.convertFileToLink(filesUploaded[i]).then(url => {
+            console.log(url);
+  
+            this.ocrParseDocDefault.readDocumentOCR(pdfExtractionMethod, APIkey, url).subscribe( responseData => {
+              console.log(responseData);
+  
+              var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+  
+              dbUser.set({
+                url: url,
+                date: new Date(),
+                data: responseData
+              })
+            }, error => {
+              console.log(error)
+            })
+          });
+
+        }
+
+      }
+
+    //Scenario 2 - STRUCTURED PDF PARSING
+
+    }else if (typeOfTemplate === "Structured PDF (.pdf)"){
+
+      // 1.2 - user has URLs
+      //we dont need to convert anything for the api request
+      //simply send a request to the api for each link
+      if(scenarioUrl === true && scenarioFile === false){
+
+        for(let i=0;i<urlUploaded.length;i++){
+
+          console.log(urlUploaded[i]);
+            // the below is working
+            this.ocrParseDocStructuredPDF.readDocumentOCR(urlUploaded[i], APIkey).subscribe( responseData => {
+              console.log(responseData);
+
+              var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+
+              dbUser.set({
+                url: urlUploaded,
+                date: new Date(),
+                data: responseData
+              })
+            }, error => {
+              console.log(error)
+            })
+        }
+
+      }
+
+      // 1.2 -- user has files
+      //we first have to convert the files into links
+      //then for each link generated by uploading the files to storage, we send an api request
+
+      if(scenarioUrl === false && scenarioFile === true){
+
+        for(let i=0;i<filesUploaded.length;i++){
+
+          this.convertFileToLink(filesUploaded[i]).then(url => {
+            console.log(url);
+  
+            this.ocrParseDocStructuredPDF.readDocumentOCR(url, APIkey).subscribe( responseData => {
+              console.log(responseData);
+  
+              var dbUser = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').doc();
+  
+              dbUser.set({
+                url: url,
+                date: new Date(),
+                data: responseData
+              })
+            }, error => {
+              console.log(error)
+            })
+          });
+
+        }
+
+      }      
+      
+    }
+
+  }
+
+}
+
+
+
         // the below is working
         // this.ocrApiService.readDocumentOCR(pdfExtractionMethod, APIkey, urlUploaded).subscribe( responseData => {
         //   console.log(responseData);
@@ -318,29 +426,11 @@ export class OcrFormComponent implements OnInit {
         // }, error => {
         //   console.log(error)
         // })
-      }
 
-    // 2 -- user has files
-        //we have to convert the files into links
-
-      if(scenarioUrl === false && scenarioFile === true){
-        //we get the information in format file
-        //we need to uplaod them to Firebase and then ger the url
-        //and then for each url created send a request to api
-
-        this.getFileUrl(filesUploaded).then(
-          //get file and then set it to the api and get response
-        )
-      }
-
-
-  }
 
   // randomButton(){
   //   console.log(Math.random().toString(36).substring(2));
   // }
-}
-
 
 // var dbUser = this.afDatabase.firestore.collection("users").doc(currentUser).collection('scannedDocs').doc();
 
