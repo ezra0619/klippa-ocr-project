@@ -268,11 +268,11 @@ export class OcrFormComponent implements OnInit {
     var currentUser: string = this.currentUserID;
 
     // var ocrParseMethod: string;
-    if (typeOfTemplate === "Financial Document (.png, .jpg, .pdf)"){
+    // if (typeOfTemplate === "Financial Document (.png, .jpg, .pdf)"){
 
-    }else if (typeOfTemplate === "Structured PDF (.pdf)"){
+    // }else if (typeOfTemplate === "Structured PDF (.pdf)"){
 
-    }
+    // }
 
     console.log(
       typeOfDocuments,
@@ -306,6 +306,7 @@ export class OcrFormComponent implements OnInit {
               dbUser.set({
                 url: urlUploaded,
                 date: new Date(),
+                ocrTemplate: typeOfTemplate,
                 data: responseData
               })
             }, error => {
@@ -334,6 +335,7 @@ export class OcrFormComponent implements OnInit {
               dbUser.set({
                 url: url,
                 date: new Date(),
+                ocrTemplate: typeOfTemplate,
                 data: responseData
               })
             }, error => {
@@ -366,6 +368,7 @@ export class OcrFormComponent implements OnInit {
               dbUser.set({
                 url: urlUploaded,
                 date: new Date(),
+                ocrTemplate: typeOfTemplate,
                 data: responseData
               })
             }, error => {
@@ -394,6 +397,7 @@ export class OcrFormComponent implements OnInit {
               dbUser.set({
                 url: url,
                 date: new Date(),
+                ocrTemplate: typeOfTemplate,
                 data: responseData
               })
             }, error => {

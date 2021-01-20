@@ -1,6 +1,6 @@
 
 .container-fluid{
-    padding: 10px;
+    padding: 15px;
     .mat-card {
         margin-bottom: 10px;
     }
@@ -56,7 +56,11 @@
 // }
 
 
-
+.receipt-content {
+  p {
+    margin-bottom: 5px;
+  }
+}
 .receipt-content .logo a:hover {
     text-decoration: none;
     color: #7793C4; 

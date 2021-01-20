@@ -1,166 +1,370 @@
 <div class="container-fluid">
 
-    <mat-card>
+    <div *ngFor="let scannedDoc of scannedDocuments">
+        <mat-card>
 
-        <div class="mat-card-content-container">
-            <div class="content-titles">
-                <mat-card-header>
-                    <mat-card-title>Scan Date:</mat-card-title>
-                    <mat-card-title>Document URL: </mat-card-title>
-                    <mat-card-title>Template: </mat-card-title>
-                </mat-card-header>    
-                <mat-card-actions>
-                    <button mat-button color="primary">View Document Information</button>
-                    <button mat-button color="primary">Json Download</button>
-                </mat-card-actions>
+            <div class="mat-card-content-container">
+                <div class="content-titles">
+                    <mat-card-header>
+                        <mat-card-title>Scan Date: {{scannedDoc.docData.date}}</mat-card-title>
+                        <mat-card-title>Document URL: {{scannedDoc.docData.url}}</mat-card-title>
+                        <mat-card-title>Template: {{scannedDoc.docData.ocrTemplate}}</mat-card-title>
+                    </mat-card-header>    
+                    <mat-card-actions>
+                        <button mat-button color="primary">View Document Information</button>
+                        <button mat-button color="primary">Json Download</button>
+                    </mat-card-actions>
+                </div>
+        
+                <div class="content-image">
+                    <img mat-card-image [src]="scannedDoc.docData.url" alt="Photo of a Shiba Inu">
+                </div>
             </div>
-    
-            <div class="content-image">
-                <img mat-card-image src="https://firebasestorage.googleapis.com/v0/b/ocr-klippa-webapp.appspot.com/o/dUnLtpEdMCfvF75j97UxzkWhBLE3%2Ffiles%2FAlbert_Heijn_XL_Assen_receipt%2C_Oude_Pekela_(2019)_03.jpg?alt=media&token=a20518b8-615d-4424-b743-cc2867be8b58" alt="Photo of a Shiba Inu">
-            </div>
-        </div>
+            
+        </mat-card>
         
-    </mat-card>
-    
-    <mat-card>
-        <div class="receipt-content">
-            <div class="container bootstrap snippets bootdey">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="invoice-wrapper">
-                            <div class="intro">
-                                Hi <strong>John McClane</strong>, 
-                                <br>
-                                This is the receipt for a payment of <strong>$312.00</strong> (USD) for your works
-                            </div>
-        
-                            <div class="payment-info">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <span>Payment No.</span>
-                                        <strong>434334343</strong>
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <span>Payment Date</span>
-                                        <strong>Jul 09, 2014 - 12:20 pm</strong>
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="payment-details">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <span>Client</span>
-                                        <strong>
-                                            Andres felipe posada
-                                        </strong>
-                                        <p>
-                                            989 5th Avenue <br>
-                                            City of monterrey <br>
-                                            55839 <br>
-                                            USA <br>
-                                            <a href="#">
-                                                jonnydeff@gmail.com
-                                            </a>
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <span>Payment To</span>
-                                        <strong>
-                                            Juan fernando arias
-                                        </strong>
-                                        <p>
-                                            344 9th Avenue <br>
-                                            San Francisco <br>
-                                            99383 <br>
-                                            USA <br>
-                                            <a href="#">
-                                                juanfer@gmail.com
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="line-items">
-                                <div class="headers clearfix">
-                                    <div class="row">
-                                        <div class="col-xs-4">Description</div>
-                                        <div class="col-xs-3">Quantity</div>
-                                        <div class="col-xs-5 text-right">Amount</div>
-                                    </div>
-                                </div>
-                                <div class="items">
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Html theme
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            3
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            $60.00
-                                        </div>
-                                    </div>
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Bootstrap snippet
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            1
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            $20.00
-                                        </div>
-                                    </div>
-                                    <div class="row item">
-                                        <div class="col-xs-4 desc">
-                                            Snippets on bootdey 
-                                        </div>
-                                        <div class="col-xs-3 qty">
-                                            2
-                                        </div>
-                                        <div class="col-xs-5 amount text-right">
-                                            $18.00
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="total text-right">
-                                    <p class="extra-notes">
-                                        <strong>Extra Notes</strong>
-                                        Please send all items at the same time to shipping address by next week.
-                                        Thanks a lot.
+        <mat-card>
+            <div class="receipt-content">
+                <div class="container bootstrap snippets bootdey">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="invoice-wrapper">
+                                <div class="intro">
+                                    <h5>Scanned Document Information</h5>
+                                    <p 
+                                        *ngIf="scannedDoc.docData.data.data.document_type !== '' 
+                                        && scannedDoc.docData.data.data.document_type !== null">
+                                            Document Type: 
+                                            <strong>
+                                                {{scannedDoc.docData.data.data.document_type}}
+                                            </strong>
                                     </p>
-                                    <div class="field">
-                                        Subtotal <span>$379.00</span>
-                                    </div>
-                                    <div class="field">
-                                        Shipping <span>$0.00</span>
-                                    </div>
-                                    <div class="field">
-                                        Discount <span>4.5%</span>
-                                    </div>
-                                    <div class="field grand-total">
-                                        Total <span>$312.00</span>
+
+                                    <p 
+                                        *ngIf="scannedDoc.docData.data.data.document_language !== '' 
+                                        && scannedDoc.docData.data.data.document_language !== null">
+                                            Document Language: 
+                                            <strong>
+                                                {{scannedDoc.docData.data.data.document_language}}
+                                            </strong>
+                                    </p>
+
+                                    <p 
+                                        *ngIf="scannedDoc.docData.data.data.document_subject !== '' 
+                                        && scannedDoc.docData.data.data.document_subject !== null">
+                                            Document Subject: 
+                                            <strong>
+                                                {{scannedDoc.docData.data.data.document_subject}}
+                                            </strong>
+                                    </p> 
+
+                                    <p 
+                                        *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                        && scannedDoc.docData.data.data.date !== null">
+                                            Date: 
+                                            <strong>
+                                                {{scannedDoc.docData.data.data.date}}
+                                            </strong>
+                                    </p>
+                                    
+                                </div>
+            
+                                <div class="payment-info">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <strong>Payment Information</strong>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.purchasedate !== '' 
+                                                && scannedDoc.docData.data.data.purchasedate !== null">
+                                                    <span>Payment Date: </span>
+                                                    {{scannedDoc.docData.data.data.purchasedate}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.purchasetime !== '' 
+                                                && scannedDoc.docData.data.data.purchasetime !== null">
+                                                    <span>Payment Date: </span>
+                                                    {{scannedDoc.docData.data.data.purchasetime}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.invoice_type !== '' 
+                                                && scannedDoc.docData.data.data.invoice_type !== null">
+                                                    <span>Invoice Type: </span>
+                                                    {{scannedDoc.docData.data.data.invoice_type}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.invoice_number !== '' 
+                                                && scannedDoc.docData.data.data.invoice_number !== null">
+                                                    <span>Invoice Number: </span>
+                                                    {{scannedDoc.docData.data.data.invoice_number}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.paymentmethod !== '' 
+                                                && scannedDoc.docData.data.data.paymentmethod !== null">
+                                                    <span>Payment Method: </span>
+                                                    {{scannedDoc.docData.data.data.paymentmethod}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_auth_code !== '' 
+                                                && scannedDoc.docData.data.data.payment_auth_code !== null">
+                                                    <span>Authentication Code: </span>
+                                                    {{scannedDoc.docData.data.data.payment_auth_code}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_card_number !== '' 
+                                                && scannedDoc.docData.data.data.payment_card_number !== null">
+                                                    <span>Card Number: </span>
+                                                    {{scannedDoc.docData.data.data.payment_card_number}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_card_account_number !== '' 
+                                                && scannedDoc.docData.data.data.payment_card_account_number !== null">
+                                                    <span>Card Account Number: </span>
+                                                    {{scannedDoc.docData.data.data.payment_card_account_number}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_card_bank !== '' 
+                                                && scannedDoc.docData.data.data.payment_card_bank !== null">
+                                                    <span>Card Bank: </span>
+                                                    {{scannedDoc.docData.data.data.payment_card_bank}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_card_issuer !== '' 
+                                                && scannedDoc.docData.data.data.payment_card_issuer !== null">
+                                                    <span>Card Issuer: </span>
+                                                    {{scannedDoc.docData.data.data.payment_card_issuer}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.payment_due_date !== '' 
+                                                && scannedDoc.docData.data.data.payment_due_date !== null">
+                                                    <span>Payment Due Date: </span>
+                                                    {{scannedDoc.docData.data.data.payment_due_date}}
+                                            </p>
+
+                                            <p 
+                                                *ngIf="scannedDoc.docData.data.data.terminal_number !== '' 
+                                                && scannedDoc.docData.data.data.terminal_number !== null">
+                                                    <span>Terminal Number: </span>
+                                                    {{scannedDoc.docData.data.data.terminal_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Receipt Number: </span>
+                                                {{scannedDoc.docData.data.data.receipt_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Shop Number: </span>
+                                                {{scannedDoc.docData.data.data.shop_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Transaction Number: </span>
+                                                {{scannedDoc.docData.data.data.transaction_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Transaction Reference: </span>
+                                                {{scannedDoc.docData.data.data.transaction_reference}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Order Number: </span>
+                                                {{scannedDoc.docData.data.data.order_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Table Number: </span>
+                                                {{scannedDoc.docData.data.data.table_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Table Group: </span>
+                                                {{scannedDoc.docData.data.data.table_group}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Server: </span>
+                                                {{scannedDoc.docData.data.data.server}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Slip Code: </span>
+                                                {{scannedDoc.docData.data.data.payment_slip_code}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Slip Reference Number: </span>
+                                                {{scannedDoc.docData.data.data.payment_slip_reference_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Slip Customer Number: </span>
+                                                {{scannedDoc.docData.data.data.payment_slip_customer_number}}
+                                            </p>
+
+                                            <p *ngIf="scannedDoc.docData.data.data.date !== '' 
+                                            && scannedDoc.docData.data.data.date !== null">
+                                                <span>Barcodes: </span>
+                                                {{scannedDoc.docData.data.data.barcodes[0].value}}
+                                            </p>
+                                        </div>
+
                                     </div>
                                 </div>
-        
-                                <!-- <div class="print">
-                                    <a href="#">
-                                        <i class="fa fa-print"></i>
-                                        Print this receipt
-                                    </a>
-                                </div> -->
+            
+                                <div class="payment-details">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <strong>Customer Information</strong>
+                                            <p><span>Name: </span>{{scannedDoc.docData.data.data.customer_name}}</p>
+                                            <p><span>Number: </span>{{scannedDoc.docData.data.data.customer_number}}</p>
+                                            <p><span>Reference: </span>{{scannedDoc.docData.data.data.customer_reference}}</p>
+                                            <p><span>Address: </span>{{scannedDoc.docData.data.data.customer_address}}</p>
+                                            <p><span>Street Name: </span>{{scannedDoc.docData.data.data.customer_street_name}}</p>
+                                            <p><span>House Number: </span>{{scannedDoc.docData.data.data.customer_house_number}}</p>
+                                            <p><span>Zip Code: </span>{{scannedDoc.docData.data.data.customer_zipcode}}</p>
+                                            <p><span>City: </span>{{scannedDoc.docData.data.data.customer_city}}</p>
+                                            <p><span>Municipality: </span>{{scannedDoc.docData.data.data.customer_municipality}}</p>
+                                            <p><span>Province: </span>{{scannedDoc.docData.data.data.customer_province}}</p>
+                                            <p><span>Country: </span>{{scannedDoc.docData.data.data.customer_country}}</p>
+                                            <p><span>Phone: </span>{{scannedDoc.docData.data.data.customer_phone}}</p>
+                                            <p><span>VAT Number: </span>{{scannedDoc.docData.data.data.customer_vat_number}}</p>
+                                            <p><span>COC Number: </span>{{scannedDoc.docData.data.data.customer_coc_number}}</p>
+                                            <p><span>Bank Account Number: </span>{{scannedDoc.docData.data.data.customer_bank_account_number}}</p>
+                                            <p><span>Bank Account Number BIC: </span>{{scannedDoc.docData.data.data.customer_bank_account_number_bic}}</p>
+                                            <p><span>Website: </span>{{scannedDoc.docData.data.data.customer_website}}</p>
+                                            <p><span>Email: </span>{{scannedDoc.docData.data.data.customer_email}}</p>
+
+                                        </div>
+                                        <div class="col-sm-6 text-right">
+                                            <strong>Merchant Information</strong>
+                                            <!-- <p><span>Name: </span>{{scannedDoc.docData.data.data.merchant_name}}</p>
+                                            <p><span>ID: </span>{{scannedDoc.docData.data.data.merchant_id}}</p>
+                                            <p><span>COC Number: </span>{{scannedDoc.docData.data.data.merchant_coc_number}}</p>
+                                            <p><span>VAT Number: </span>{{scannedDoc.docData.data.data.merchant_vat_number}}</p>
+                                            <p><span>Bank Account Number: </span>{{scannedDoc.docData.data.data.merchant_bank_account_number}}</p>
+                                            <p><span>Bank Account Number BIC: </span>{{scannedDoc.docData.data.data.merchant_bank_account_number_bic}}</p>
+                                            <p><span>Chain Liability Amount: </span>{{scannedDoc.docData.data.data.merchant_chain_liability_amount}}</p>
+                                            <p><span>Chain Liability Bank Account Number: </span>{{scannedDoc.docData.data.data.merchant_chain_liability_bank_account_number}}</p>
+                                            <p><span>Bank Domestic Account Number: </span>{{scannedDoc.docData.data.data.merchant_bank_domestic_account_number}}</p>
+                                            <p><span>Domestic Bank Code: </span>{{scannedDoc.docData.data.data.merchant_bank_domestic_bank_code}}</p>
+                                            <p><span>Website: </span>{{scannedDoc.docData.data.data.merchant_website}}</p>
+                                            <p><span>Email: </span>{{scannedDoc.docData.data.data.merchant_email}}</p>
+                                            <p><span>Address: </span>{{scannedDoc.docData.data.data.merchant_address}}</p>
+                                            <p><span>Street Name: </span>{{scannedDoc.docData.data.data.merchant_street_name}}</p>
+                                            <p><span>House Number: </span>{{scannedDoc.docData.data.data.merchant_house_number}}</p>
+                                            <p><span>Zip Code: </span>{{scannedDoc.docData.data.data.merchant_zipcode}}</p>
+                                            <p><span>City: </span>{{scannedDoc.docData.data.data.merchant_city}}</p>
+                                            <p><span>Municipality: </span>{{scannedDoc.docData.data.data.merchant_municipality}}</p>
+                                            <p><span>Province: </span>{{scannedDoc.docData.data.data.merchant_province}}</p>
+                                            <p><span>Country: </span>{{scannedDoc.docData.data.data.merchant_country}}</p>
+                                            <p><span>Country Code: </span>{{scannedDoc.docData.data.data.merchant_country_code}}</p>
+                                            <p><span>Phone: </span>{{scannedDoc.docData.data.data.merchant_phone}}</p>
+                                            <p><span>Main Activity Code: </span>{{scannedDoc.docData.data.data.merchant_main_activity_code}}</p> -->
+
+                                            <div *ngFor="let merchantData of scannedDoc.docData.data.data | keyvalue : filterMerchant">
+                                                <!-- <p *ngIf="merchantData.value != '' && merchantData.value != null">
+                                                    <span>Name: </span>
+                                                    {{scannedDoc.docData.data.data.merchant_name}}
+                                                </p> -->
+
+                                                <p>
+                                                    <span>{{merchantData.key}}</span>
+                                                    {{merchantData.value}}
+                                                </p>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="line-items">
+                                    <div class="headers clearfix">
+                                        <div class="row">
+                                            <div class="col-xs-4">Description</div>
+                                            <div class="col-xs-3">Quantity</div>
+                                            <div class="col-xs-5 text-right">Amount</div>
+                                        </div>
+                                    </div>
+                                    <div class="items" *ngFor="let items of scannedDoc.docData.data.data.lines[0].lineitems">
+                                        <div class="row item">
+                                            <div class="col-xs-4 desc">
+                                                {{items.title}}
+                                            </div>
+                                            <div class="col-xs-3 qty">
+                                                {{items.quantity}}
+                                            </div>
+                                            <div class="col-xs-5 amount text-right">
+                                                {{scannedDoc.docData.data.data.currency}} {{items.amount}}
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="total text-right">
+                                        <p class="extra-notes">
+                                            <strong>Raw Text Found</strong>
+                                            {{scannedDoc.docData.data.data.raw_text}}
+                                        </p>
+
+                                        <!-- //actual payment -->
+                                        <div class="field">
+                                            Subtotal <span>{{scannedDoc.docData.data.data.currency}} {{scannedDoc.docData.data.data.amount}}</span>
+                                        </div>
+                                        <div class="field">
+                                            Amount Change: <span>{{scannedDoc.docData.data.data.currency}} {{scannedDoc.docData.data.data.amount_change}}</span>
+                                        </div>
+                                        <div class="field">
+                                            VAT:  <span>{{scannedDoc.docData.data.data.currency}} {{scannedDoc.docData.data.data.vatamount}}</span>
+                                        </div>
+                                        <div class="field grand-total">
+                                            Total: <span>{{scannedDoc.docData.data.data.currency}} {{scannedDoc.docData.data.data.amountexvat}}</span>
+                                        </div>
+                                    </div>
+            
+                                    <!-- <div class="print">
+                                        <a href="#">
+                                            <i class="fa fa-print"></i>
+                                            Print this receipt
+                                        </a>
+                                    </div> -->
+                                </div>
                             </div>
-                        </div>
-        
-                        <div class="footer">
-                            <!-- Copyright © 2014. company name -->
+            
+                            <div class="footer">
+                                <!-- Copyright © 2014. company name -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>                    
-    </mat-card>
+            </div>                    
+        </mat-card>
+    </div>
     
 </div>
+
+
+<!-- <button class="btn btn-primary" (click)="filter()">Press Me</button> -->
+<button class="btn btn-primary" (click)="logResponseCollection()">Log</button>

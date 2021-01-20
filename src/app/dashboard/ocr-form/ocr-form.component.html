@@ -1,169 +1,170 @@
-<form [formGroup]="ocrForm" (ngSubmit)="onSubmit()">
-  <mat-vertical-stepper [linear]="isLinear" formArrayName="formArray" #stepper>
-
-    <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
-      <ng-template matStepLabel>Document Type</ng-template>
-      <label id="typeOfDocuments">What would you like to scan?</label>
-      <mat-radio-group
-        class="radio-group"
-        formControlName="documentTypeField"
-        >
-        <mat-radio-button 
-          class="radio-button"
-          *ngFor="let typeOfDocument of typeOfDocuments"
-          [value]="typeOfDocument.value" 
-          (click)="setCurrentDocType(typeOfDocument.value)">
-          {{typeOfDocument.value}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div>
-        <button type="button" mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
+<div class="container-fluid">
+  <mat-card>
+    <form [formGroup]="ocrForm" (ngSubmit)="onSubmit()">
+      <mat-vertical-stepper [linear]="isLinear" formArrayName="formArray" #stepper>
     
-    <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
-      <ng-template matStepLabel>Template</ng-template>
-      <label id="templates">What would you like to scan?</label>
-      <mat-radio-group
-        class="radio-group"
-        formControlName="templateField"
-        >
-        <mat-radio-button 
-          class="radio-button"
-          *ngFor="let template of templates"
-          [value]="template.value"
-          (click)="setTemplate(template.value)">
-          {{template.value}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div>
-        <button type="button" mat-button matStepperPrevious>Back</button>
-        <button type="button" mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-
-    <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
-      <ng-template matStepLabel>PDF Scan Method</ng-template>
-      <label id="pdfExtractionMethods">Please choose PDF extraction method.</label>
-      <mat-radio-group
-        class="radio-group"
-        formControlName="pdfExtractionMethodsField"
-        >
-        <mat-radio-button 
-          class="radio-button"
-          *ngFor="let pdfExtractionMethod of pdfExtractionMethods"
-          [value]="pdfExtractionMethod.value"
-          (click)="setPDFScanMethod(pdfExtractionMethod.value)">
-          {{pdfExtractionMethod.value}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div>
-        <button type="button" mat-button matStepperPrevious>Back</button>
-        <button type="button" mat-button matStepperNext>Next</button>
-      </div>
-    </mat-step>
-
-    <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
-        <ng-template matStepLabel>API Key</ng-template>
-        <mat-form-field>
-          <mat-label>API Key</mat-label>
-          <input 
-            matInput 
-            placeholder="API Key" 
-            formControlName="apiKeyField" 
-            required>
-        </mat-form-field>
-        <div>
-          <button type="button" mat-button matStepperNext>Next</button>
-        </div>
-    </mat-step>
-
-    <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
-      
-      <!-- //dummy label until values are mentioned by user -->
-      <ng-template 
-        *ngIf="currentFormValuesDinamic.showFileUpload === false 
-          && currentFormValuesDinamic.showUrlUpload === false" matStepLabel>
-          File Upload
-        </ng-template>
-
-      <div *ngIf="currentFormValuesDinamic.showFileUpload === true">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <div>
-          <h5>Folder/s Upload</h5>
-          <input type="file" 
-          formControlName="filesUpload" 
-          webkitdirectory 
-          multiple 
-          value="Please select folder"
-          (change)="detectFiles($event)"
-          />
-        </div>
+        <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
+          <ng-template matStepLabel>Document Type</ng-template>
+          <label id="typeOfDocuments">What would you like to scan?</label>
+          <mat-radio-group
+            class="radio-group"
+            formControlName="documentTypeField"
+            >
+            <mat-radio-button 
+              class="radio-button"
+              *ngFor="let typeOfDocument of typeOfDocuments"
+              [value]="typeOfDocument.value" 
+              (click)="setCurrentDocType(typeOfDocument.value)">
+              {{typeOfDocument.value}}
+            </mat-radio-button>
+          </mat-radio-group>
+          <div>
+            <button type="button" mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
         
-        <div>
-          <h5>File/s Upload</h5>
-          <input 
-          type="file" 
-          formControlName="filesUpload" 
-          [accept]="currentFormValuesDinamic.acceptedExtension" 
-          multiple 
-          value="Please select files"
-          (change)="detectFiles($event)"/>
-        </div>
-
-        <div *ngIf="currentFormValuesDinamic.filesUploaded.length >= 1">
-          <p>Current extensions accepted: {{currentFormValuesDinamic.acceptedExtension}}</p>
-          <p>Current valid files selected:</p>
-          <p *ngFor="let validFile of currentFormValuesDinamic.filesUploaded">
-            {{validFile.name}}
-          </p>
-        </div>
-        
-        <div>
-          <button type="button" mat-button matStepperNext>Next</button>
-        </div>
-      </div>
-
-      <div *ngIf="currentFormValuesDinamic.showUrlUpload === true" class="urlFieldContainer">
-        <ng-template matStepLabel>File Upload</ng-template>
-        <mat-form-field 
-          *ngFor="let item of currentFormValuesDinamic.urlUploaded; let i = index">
-          <mat-label>URL</mat-label>
-          <input 
-            type="text"
-            matInput 
-            placeholder="URL" 
-            formControlName="filesUpload" 
-            (change)="detectURLs($event, i)"
-            [value]="item"
-            required>
-        </mat-form-field>
-        <div>
-          <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
-          <button *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
-          <button type="button" mat-button matStepperNext>Next</button>
-        </div>
-      </div>
-
-    </mat-step>
-
-
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <p>Everything seems in order.</p>
-      <div>
-        <button type="button" mat-button matStepperPrevious>Back</button>
-        <button type="button" mat-button (click)="stepper.reset()">Reset</button>
-        <button type="submit" mat-button>Scan</button>
-      </div>
-    </mat-step>
-  </mat-vertical-stepper>
-
-|</form>
-
-<!-- <div>
-  <button class="btn btn-primary" (click)="convertFileToLink()"></button>
-</div> -->
+        <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
+          <ng-template matStepLabel>Template</ng-template>
+          <label id="templates">What would you like to scan?</label>
+          <mat-radio-group
+            class="radio-group"
+            formControlName="templateField"
+            >
+            <mat-radio-button 
+              class="radio-button"
+              *ngFor="let template of templates"
+              [value]="template.value"
+              (click)="setTemplate(template.value)">
+              {{template.value}}
+            </mat-radio-button>
+          </mat-radio-group>
+          <div>
+            <button type="button" mat-button matStepperPrevious>Back</button>
+            <button type="button" mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+    
+        <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
+          <ng-template matStepLabel>PDF Scan Method</ng-template>
+          <label id="pdfExtractionMethods">Please choose PDF extraction method.</label>
+          <mat-radio-group
+            class="radio-group"
+            formControlName="pdfExtractionMethodsField"
+            >
+            <mat-radio-button 
+              class="radio-button"
+              *ngFor="let pdfExtractionMethod of pdfExtractionMethods"
+              [value]="pdfExtractionMethod.value"
+              (click)="setPDFScanMethod(pdfExtractionMethod.value)">
+              {{pdfExtractionMethod.value}}
+            </mat-radio-button>
+          </mat-radio-group>
+          <div>
+            <button type="button" mat-button matStepperPrevious>Back</button>
+            <button type="button" mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+    
+        <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
+            <ng-template matStepLabel>API Key</ng-template>
+            <mat-form-field>
+              <mat-label>API Key</mat-label>
+              <input 
+                matInput 
+                placeholder="API Key" 
+                formControlName="apiKeyField" 
+                required>
+            </mat-form-field>
+            <div>
+              <button type="button" mat-button matStepperNext>Next</button>
+            </div>
+        </mat-step>
+    
+        <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
+          
+          <!-- //dummy label until values are mentioned by user -->
+          <ng-template 
+            *ngIf="currentFormValuesDinamic.showFileUpload === false 
+              && currentFormValuesDinamic.showUrlUpload === false" matStepLabel>
+              File Upload
+            </ng-template>
+    
+          <div *ngIf="currentFormValuesDinamic.showFileUpload === true">
+            <ng-template matStepLabel>File Upload</ng-template>
+            <div>
+              <h5>Folder/s Upload</h5>
+              <input type="file" 
+              formControlName="filesUpload" 
+              webkitdirectory 
+              multiple 
+              value="Please select folder"
+              (change)="detectFiles($event)"
+              />
+            </div>
+            
+            <div>
+              <h5>File/s Upload</h5>
+              <input 
+              type="file" 
+              formControlName="filesUpload" 
+              [accept]="currentFormValuesDinamic.acceptedExtension" 
+              multiple 
+              value="Please select files"
+              (change)="detectFiles($event)"/>
+            </div>
+    
+            <div *ngIf="currentFormValuesDinamic.filesUploaded.length >= 1">
+              <p>Current extensions accepted: {{currentFormValuesDinamic.acceptedExtension}}</p>
+              <p>Current valid files selected:</p>
+              <p *ngFor="let validFile of currentFormValuesDinamic.filesUploaded">
+                {{validFile.name}}
+              </p>
+            </div>
+            
+            <div>
+              <button type="button" mat-button matStepperNext>Next</button>
+            </div>
+          </div>
+    
+          <div *ngIf="currentFormValuesDinamic.showUrlUpload === true" class="urlFieldContainer">
+            <ng-template matStepLabel>File Upload</ng-template>
+            <mat-form-field 
+              *ngFor="let item of currentFormValuesDinamic.urlUploaded; let i = index">
+              <mat-label>URL</mat-label>
+              <input 
+                type="text"
+                matInput 
+                placeholder="URL" 
+                formControlName="filesUpload" 
+                (change)="detectURLs($event, i)"
+                [value]="item"
+                required>
+            </mat-form-field>
+            <div>
+              <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
+              <button *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
+              <button type="button" mat-button matStepperNext>Next</button>
+            </div>
+          </div>
+    
+        </mat-step>
+    
+    
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <p>Everything seems in order.</p>
+          <div>
+            <button type="button" mat-button matStepperPrevious>Back</button>
+            <button type="button" mat-button (click)="stepper.reset()">Reset</button>
+            <button type="submit" mat-button>Scan</button>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
+    
+    |</form>
+  </mat-card>
+  
+</div>
 
 
 

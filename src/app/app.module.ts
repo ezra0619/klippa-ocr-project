@@ -14,7 +14,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
 import { SideNavComponent } from './dashboard/side-nav/side-nav.component';
-import { SettingsComponent } from './dashboard/settings/settings.component';
 import { OcrDetailsFormComponent } from './dashboard/ocr-details-form/ocr-details-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -47,7 +46,6 @@ import { DocTemplateComponent } from './doc-template/doc-template.component';
     SideNavComponent,
     TopNavComponent,
     MyAccountComponent,
-    SettingsComponent,
     DashboardComponent,
     OcrDetailsFormComponent,
     SignInComponent,
