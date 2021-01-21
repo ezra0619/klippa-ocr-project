@@ -38,6 +38,9 @@ import { MatRadioModule } from '@angular/material/radio';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DocTemplateComponent } from './doc-template/doc-template.component';
+import { FirestoreDatePipe } from './shared/firestore-date.pipe';
+import { NiceLookingKeyPipe } from './shared/nice-looking-key.pipe';
+import { TwoDecimalSumStrPipe } from './shared/two-decimal-sum-str.pipe';
 
 
 @NgModule({
@@ -56,7 +59,10 @@ import { DocTemplateComponent } from './doc-template/doc-template.component';
     VerifyEmailComponent,
     HamburgerToggleDirective,
     OcrFormComponent,
-    DocTemplateComponent
+    DocTemplateComponent,
+    FirestoreDatePipe,
+    NiceLookingKeyPipe,
+    TwoDecimalSumStrPipe
   ],
   imports: [
     BrowserModule,

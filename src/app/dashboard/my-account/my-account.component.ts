@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { DbScannedDocResponseModel } from 'src/app/shared/db-scanned-doc-response.model';
+import { FilteredScanObjModel } from 'src/app/shared/filteredScanObj.model';
 import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
 
 @Component({
@@ -16,19 +17,9 @@ export class MyAccountComponent implements OnInit {
   basePath: string;
   dbUserScanCollection: any;
   scannedDocuments: DbScannedDocResponseModel[] = [];
-  
-  responseCollection: {
-    docID: string,
-    url: string,
-    date: Date,
-    ocrTemplate: string,
-    documentInformation: {},
-    paymentInformation: {},
-    customerInformation: {},
-    merchantInformation: {},
-    customFields: {},
-    amountInformation: {}
-  } = {
+  filteredObjects: FilteredScanObjModel[] = [];
+
+  responseCollection:FilteredScanObjModel = {
     docID: "",
     url: "",
     date: new Date,
@@ -37,8 +28,60 @@ export class MyAccountComponent implements OnInit {
     paymentInformation: {},
     customerInformation: {},
     merchantInformation: {},
-    customFields: {},
-    amountInformation: {}
+    customFields: {
+      raw_text: "", 
+      lines: [
+        {
+        "description": "",
+        "lineitems": [
+            {
+            "amount": 0,
+            "amount_each": 0,
+            "amount_ex_vat": 0,
+            "description": "",
+            "quantity": 0,
+            "sku": "",
+            "title": "",
+            "vat_amount": 0,
+            "vat_code": "",
+            "vat_percentage": 0
+            }
+          ]
+        }
+      ],
+      barcodes: [
+        {
+        "type": "",
+        "value": ""
+        }
+      ], 
+      matched_lineitems: [
+        {
+        "id": "",
+        "lineitems": [
+            {
+            "amount": 0,
+            "amount_each": 0,
+            "amount_ex_vat": 0,
+            "description": "",
+            "quantity": 0,
+            "sku": "",
+            "title": "",
+            "vat_amount": 0,
+            "vat_code": "",
+            "vat_percentage": 0
+            }
+          ]
+        }
+      ],
+    },
+    amountInformation:{
+      "currency": "", 
+      "amount": 0, 
+      "amount_change": 0, 
+      "amountexvat": 0, 
+      "vatamount": 0
+    }
   }
 
   paymentInformationKeys = [
@@ -133,19 +176,7 @@ export class MyAccountComponent implements OnInit {
     "amountexvat", 
     "vatamount"
   ];
-  
-  filteredObjects: {
-    docID: string,
-    url: string,
-    date: Date,
-    ocrTemplate: string,
-    documentInformation: {},
-    paymentInformation: {},
-    customerInformation: {},
-    merchantInformation: {},
-    customFields: {},
-    amountInformation:{}
-  }[] = [];
+
  
   ngOnInit(): void {
 
@@ -179,6 +210,8 @@ export class MyAccountComponent implements OnInit {
             this.responseCollection.docID = item.docID;
             this.responseCollection.url = item.docData.url;
             this.responseCollection.date = item.docData.date;
+            var newDate = item.docData.date.toDateString;
+            console.log(newDate + "here is rhe new date");
             this.responseCollection.ocrTemplate = item.docData.ocrTemplate;
 
 
@@ -220,8 +253,60 @@ export class MyAccountComponent implements OnInit {
               paymentInformation: {},
               customerInformation: {},
               merchantInformation: {},
-              customFields: {},
-              amountInformation: {}
+              customFields: {
+                raw_text: "", 
+                lines: [
+                  {
+                  "description": "",
+                  "lineitems": [
+                      {
+                      "amount": 0,
+                      "amount_each": 0,
+                      "amount_ex_vat": 0,
+                      "description": "",
+                      "quantity": 0,
+                      "sku": "",
+                      "title": "",
+                      "vat_amount": 0,
+                      "vat_code": "",
+                      "vat_percentage": 0
+                      }
+                    ]
+                  }
+                ],
+                barcodes: [
+                  {
+                  "type": "",
+                  "value": ""
+                  }
+                ], 
+                matched_lineitems: [
+                  {
+                  "id": "",
+                  "lineitems": [
+                      {
+                      "amount": 0,
+                      "amount_each": 0,
+                      "amount_ex_vat": 0,
+                      "description": "",
+                      "quantity": 0,
+                      "sku": "",
+                      "title": "",
+                      "vat_amount": 0,
+                      "vat_code": "",
+                      "vat_percentage": 0
+                      }
+                    ]
+                  }
+                ],
+              },
+              amountInformation:{
+                "currency": "", 
+                "amount": 0, 
+                "amount_change": 0, 
+                "amountexvat": 0, 
+                "vatamount": 0
+              }
             }
             console.log(this.responseCollection);
           }
@@ -242,12 +327,42 @@ export class MyAccountComponent implements OnInit {
 
   }
 
-  logResponseCollection(){
-    console.log(this.filteredObjects);
+
+  filterRandom(){
+    var number = 69;
+    var numberArr;
+    var numberTempStr;
+    var finalNr;
+    var numberStr;
+
+    numberStr = number.toString();
+    numberArr = numberStr.split('');
+    numberArr.splice(0, 0, '0','.');
+    console.log(numberArr);
+    numberTempStr = numberArr.join("");
+    finalNr = parseFloat(numberTempStr);
+    console.log(finalNr);
   }
 
-  filterMerchant = (a: KeyValue<string,any>) => {
-    return a.key.indexOf('merchant') > -1 ? 0 : -1;
-    // console.log(a.key.indexOf('merchant'))
+
+  downloadObjectAsJson(exportObj, exportName){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   }
+
+  toggleScannedDoc(id: string){
+    if(document.getElementById(id).classList.contains('d-none')=== true){
+      document.getElementById(id).classList.remove("d-none");
+      document.getElementById(id).classList.add('d-block');
+    }else if(document.getElementById(id).classList.contains('d-none')=== false){
+      document.getElementById(id).classList.remove("d-block");
+      document.getElementById(id).classList.add('d-none');
+    };
+  }
+
 }
