@@ -11,8 +11,7 @@
     </div>
 
     <div class="formGroup">
-      <input type="button" class="btn btn-primary btn-block" value="Sign in"
-        (click)="ngAuthService.SignIn(userName.value, userPassword.value)">
+      <button (click)="ngAuthService.SignIn(userName.value, userPassword.value)" class="btn btn-primary btn-block">Sign In</button>
     </div>
     <div class="forgotPassword">
       <span routerLink="/forgot-password">Forgot Password?</span>

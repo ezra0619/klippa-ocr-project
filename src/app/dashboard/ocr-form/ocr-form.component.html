@@ -3,12 +3,15 @@
     <form [formGroup]="ocrForm" (ngSubmit)="onSubmit()">
       <mat-vertical-stepper [linear]="isLinear" formArrayName="formArray" #stepper>
     
-        <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
+
+        <!-- //Document Type -->
+        <mat-step formGroupName="0" [stepControl]="formArray?.get([0])" errorMessage="Document Type is required.">
           <ng-template matStepLabel>Document Type</ng-template>
           <label id="typeOfDocuments">What would you like to scan?</label>
           <mat-radio-group
             class="radio-group"
             formControlName="documentTypeField"
+            id="documentTypeField"
             >
             <mat-radio-button 
               class="radio-button"
@@ -18,12 +21,23 @@
               {{typeOfDocument.value}}
             </mat-radio-button>
           </mat-radio-group>
+          <mat-error 
+            *ngIf="!ocrForm.get('formArray.0.documentTypeField').valid 
+            && ocrForm.get('formArray.0.documentTypeField').touched">
+              Document Type is required.
+          </mat-error>
           <div>
-            <button type="button" mat-button matStepperNext>Next</button>
+            <button 
+              type="button" 
+              mat-button matStepperNext 
+              (click)="ocrForm.get('formArray.0.documentTypeField').markAsTouched()">
+                Next
+            </button>
           </div>
         </mat-step>
         
-        <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
+        <!-- //Template -->
+        <mat-step formGroupName="1" [stepControl]="formArray?.get([1])" errorMessage="Template is required.">
           <ng-template matStepLabel>Template</ng-template>
           <label id="templates">What would you like to scan?</label>
           <mat-radio-group
@@ -38,13 +52,24 @@
               {{template.value}}
             </mat-radio-button>
           </mat-radio-group>
+          <mat-error 
+            *ngIf="!ocrForm.get('formArray.1.templateField').valid 
+            && ocrForm.get('formArray.1.templateField').touched">
+              Template is required.
+          </mat-error>
           <div>
             <button type="button" mat-button matStepperPrevious>Back</button>
-            <button type="button" mat-button matStepperNext>Next</button>
+            <button 
+              type="button" 
+              mat-button matStepperNext 
+              (click)="ocrForm.get('formArray.1.templateField').markAsTouched()">
+                Next
+            </button>
           </div>
         </mat-step>
     
-        <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
+        <!-- //PDF Scan Method -->
+        <mat-step formGroupName="2" [stepControl]="formArray?.get([2])" errorMessage="PDF Scan Method is required.">
           <ng-template matStepLabel>PDF Scan Method</ng-template>
           <label id="pdfExtractionMethods">Please choose PDF extraction method.</label>
           <mat-radio-group
@@ -59,13 +84,24 @@
               {{pdfExtractionMethod.value}}
             </mat-radio-button>
           </mat-radio-group>
+          <mat-error 
+            *ngIf="!ocrForm.get('formArray.2.pdfExtractionMethodsField').valid 
+            && ocrForm.get('formArray.2.pdfExtractionMethodsField').touched">
+              PDF Scan Method is required.
+          </mat-error>
           <div>
             <button type="button" mat-button matStepperPrevious>Back</button>
-            <button type="button" mat-button matStepperNext>Next</button>
+            <button 
+              type="button" 
+              mat-button matStepperNext 
+              (click)="ocrForm.get('formArray.2.pdfExtractionMethodsField').markAsTouched()">
+                Next
+            </button>
           </div>
         </mat-step>
     
-        <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
+        <!-- //API Key -->
+        <mat-step formGroupName="3" [stepControl]="formArray?.get([3])" errorMessage="API Key is required.">
             <ng-template matStepLabel>API Key</ng-template>
             <mat-form-field>
               <mat-label>API Key</mat-label>
@@ -75,12 +111,23 @@
                 formControlName="apiKeyField" 
                 required>
             </mat-form-field>
+            <mat-error 
+              *ngIf="!ocrForm.get('formArray.3.apiKeyField').valid 
+              && ocrForm.get('formArray.3.apiKeyField').touched">
+                API Key is required.
+            </mat-error>
             <div>
-              <button type="button" mat-button matStepperNext>Next</button>
+              <button 
+              type="button" 
+              mat-button matStepperNext 
+              (click)="ocrForm.get('formArray.3.apiKeyField').markAsTouched()">
+                Next
+            </button>
             </div>
         </mat-step>
     
-        <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
+        <!-- //File Upload -->
+        <mat-step formGroupName="4" [stepControl]="formArray?.get([4])" errorMessage="At least one file/URL is required.">
           
           <!-- //dummy label until values are mentioned by user -->
           <ng-template 
@@ -140,16 +187,28 @@
                 [value]="item"
                 required>
             </mat-form-field>
+            <mat-error 
+              *ngIf="!ocrForm.get('formArray.4.filesUpload').valid 
+              && ocrForm.get('formArray.4.filesUpload').touched">
+                At least one file/URL is required.
+            </mat-error>
+            
             <div>
               <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
               <button *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
-              <button type="button" mat-button matStepperNext>Next</button>
+              <button 
+                type="button" 
+                mat-button matStepperNext 
+                (click)="ocrForm.get('formArray.4.filesUpload').markAsTouched()">
+                  Next
+              </button>
             </div>
           </div>
     
         </mat-step>
     
     
+        <!-- //Done -->
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>
           <p>Everything seems in order.</p>
@@ -161,7 +220,7 @@
         </mat-step>
       </mat-vertical-stepper>
     
-    |</form>
+    </form>
   </mat-card>
   
 </div>

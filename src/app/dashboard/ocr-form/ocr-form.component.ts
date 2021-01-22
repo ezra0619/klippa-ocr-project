@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
@@ -6,12 +5,15 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm,
 import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
 import { OcrParseDocDefaultService } from 'src/app/shared/ocr-parse-doc-default.service';
 import { OcrParseDocStructuredPDFService } from 'src/app/shared/ocr-parse-doc-structured-pdf.service';
-
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-ocr-form',
   templateUrl: './ocr-form.component.html',
-  styleUrls: ['./ocr-form.component.scss']
+  styleUrls: ['./ocr-form.component.scss'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+  }]
 })
 export class OcrFormComponent implements OnInit {
 
@@ -52,8 +54,6 @@ export class OcrFormComponent implements OnInit {
     showFileUpload: false,
     acceptedExtension: ".png, .jpg, .pdf"
   }
-
-//enctype="multipart/form-data"
 
   typeOfDocuments: {id: string, value: string}[] = [
     {
@@ -98,27 +98,16 @@ export class OcrFormComponent implements OnInit {
               private afDatabase: AngularFirestore,
               public ngAuthService: NgAuthService,
               private afStorage: AngularFireStorage) {
-          
+    
+    let user = JSON.parse(localStorage.getItem('user'));
+    this.currentUserID = user.uid;
+    this.basePath = '/' + this.currentUserID + '/files';
+
+    //testing purposes
+    // console.log(user.uid);
   }
 
   ngOnInit() {
-
-    console.log(btoa("password"));
-
-    this.ngAuthService.afAuth.onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in.
-        this.currentUserID = user.uid;
-        this.basePath = '/' + this.currentUserID + '/files';
-
-        // testing purposes
-        console.log("user is signed in");
-        console.log(user.uid);
-
-      } else {
-        // No user is signed in.
-      }
-    });
 
     this.ocrForm = this.formBuilder.group({
       formArray: this.formBuilder.array([
@@ -266,13 +255,6 @@ export class OcrFormComponent implements OnInit {
     var scenarioUrl = this.currentFormValuesDinamic.showUrlUpload;
     var scenarioFile = this.currentFormValuesDinamic.showFileUpload;
     var currentUser: string = this.currentUserID;
-
-    // var ocrParseMethod: string;
-    // if (typeOfTemplate === "Financial Document (.png, .jpg, .pdf)"){
-
-    // }else if (typeOfTemplate === "Structured PDF (.pdf)"){
-
-    // }
 
     console.log(
       typeOfDocuments,

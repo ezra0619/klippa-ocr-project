@@ -27,5 +27,15 @@
 }
 
 .container-fluid {
-  padding: 15px;
+  padding: 25px;
+}
+
+mat-error{
+  padding-top:5px;
+  padding-bottom: 15px;
+}
+
+button:focus,
+button:active{
+  outline: none;
 }

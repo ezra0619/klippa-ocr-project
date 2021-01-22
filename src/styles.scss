@@ -8,14 +8,21 @@
 
 body {
     font-size: 15px;
+    overflow: hidden;
+    height: 100%;
 }
 
 .row,
 .col,
 .col-2,
-.col-10 {
+.col-10,
+.col-12 {
     margin: 0;
     padding: 0;
+}
+
+.hideContent {
+    display: none;
 }
 
 @import "~bootstrap/dist/css/bootstrap.css";

@@ -1,7 +1,7 @@
 <div class="row" id="top-nav-container">
-    <div class="col-2 logoNav-container">
+    <div class="col-2 hamburger-container">
         <div class="side-nav-controls">
-            <button class="hamburger hamburger--spin" type="button" appHamburgerToggle>
+            <button class="hamburger hamburger--spin" type="button" appHamburgerToggle (click)='toggleSideNav()'>
                 <span class="hamburger-box">
                   <span class="hamburger-inner"></span>
                 </span>
@@ -28,8 +28,7 @@
 
             
         <div class="user-information">
-            <p><strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></p>
-            <p>Email: <strong>{{user.email}}</strong></p>
+            <p>User: <strong>{{user.email}}</strong></p>
         </div>
     </div>
 

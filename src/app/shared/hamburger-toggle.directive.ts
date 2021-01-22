@@ -6,7 +6,7 @@ import { Directive, HostBinding, HostListener } from '@angular/core';
 export class HamburgerToggleDirective {
 
   @HostBinding('class.is-active')
-  private isActive = false;
+  private isActive = true;
 
   @HostListener('click')
   toggleActive(): void {

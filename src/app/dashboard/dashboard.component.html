@@ -4,13 +4,14 @@
         <app-top-nav class="w-100"></app-top-nav>
     </div>
     <div class="row">
-        <div class="col-2">
+        <div id="side-nav-container"  class="col-2">
+            <!-- //to make it work with ngClass.xs -->
+            <!-- //class w-100 rendered the 1st time also works -->
             <app-side-nav></app-side-nav>
         </div>
-        <div class="col-10">
+        <div id="main-information-container" class="w-100">
             
-            <!-- this is the main information container -->
-            <div id="main-information-container">
+            <div id="info-container">
                 <router-outlet></router-outlet>
             </div>
         </div>

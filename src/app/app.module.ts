@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MyAccountComponent } from './dashboard/my-account/my-account.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { AngularFireStorageModule} from "@angular/fire/storage";
@@ -14,7 +13,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { environment } from 'src/environments/environment';
 import { SideNavComponent } from './dashboard/side-nav/side-nav.component';
-import { OcrDetailsFormComponent } from './dashboard/ocr-details-form/ocr-details-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -37,10 +35,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DocTemplateComponent } from './doc-template/doc-template.component';
 import { FirestoreDatePipe } from './shared/firestore-date.pipe';
 import { NiceLookingKeyPipe } from './shared/nice-looking-key.pipe';
 import { TwoDecimalSumStrPipe } from './shared/two-decimal-sum-str.pipe';
+import { MyDocumentsComponent } from './dashboard/my-documents/my-documents.component';
 
 
 @NgModule({
@@ -48,9 +46,8 @@ import { TwoDecimalSumStrPipe } from './shared/two-decimal-sum-str.pipe';
     AppComponent,
     SideNavComponent,
     TopNavComponent,
-    MyAccountComponent,
     DashboardComponent,
-    OcrDetailsFormComponent,
+    MyDocumentsComponent,
     SignInComponent,
     SignInFormComponent,
     SignUpComponent,
@@ -59,7 +56,6 @@ import { TwoDecimalSumStrPipe } from './shared/two-decimal-sum-str.pipe';
     VerifyEmailComponent,
     HamburgerToggleDirective,
     OcrFormComponent,
-    DocTemplateComponent,
     FirestoreDatePipe,
     NiceLookingKeyPipe,
     TwoDecimalSumStrPipe
