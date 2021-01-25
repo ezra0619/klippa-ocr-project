@@ -18,7 +18,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { NgAuthService } from './shared/ng-auth.service.ts.service';
+import { NgAuthService } from './shared/ng-auth.service';
 import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
 import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';

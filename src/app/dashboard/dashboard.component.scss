@@ -1,13 +1,15 @@
 
 .container-fluid {
     padding: 0;
-}
 
-#info-container{
-    height: 100vh;
-    overflow-y: auto;
-    padding-top: 60px;
-    width: 100%;
-    background-color: #F4F6F7;
+    #info-container{
+        height: 100vh;
+        overflow-y: auto;
+        padding-left: 60px;
+        padding-top: 60px;
+        width: 100%;
+        background-color: #F4F6F7;
+    }
+
 }
 

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
+import { NgAuthService } from 'src/app/shared/ng-auth.service';
 
+export class SignUpForm {
+  userEmail: string;
+  userPwd: string;
+}
 
 @Component({
   selector: 'app-sign-up-form',
@@ -9,8 +13,20 @@ import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
 })
 export class SignUpFormComponent implements OnInit {
 
+    signUpForm = new SignUpForm();
+    error: boolean = false;
+    errorMessage:string = ""; 
+
     constructor(public ngAuthService: NgAuthService) { }
 
+    submit(email, password){
+      this.ngAuthService.SignUp(email, password).catch((error)=> {
+        this.error = true;
+        console.log(error);
+        this.errorMessage = error.message;
+      })
+    }
+    
     ngOnInit() {
        
     }

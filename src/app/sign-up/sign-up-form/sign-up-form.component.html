@@ -1,24 +1,54 @@
 <div class="displayTableCell">
 
-    <div class="authBlock">
-      <h3>Register User</h3>
+  <div class="authBlock">
+    <h3>Register User</h3>
 
-      <div class="formGroup">
-        <input type="email" class="form-control" placeholder="Email Address" #userEmail required>
+    <div class="formGroup">
+      <input 
+        type="email" 
+        name="userEmail"
+        class="form-control" 
+        placeholder="Email Address" 
+        [(ngModel)]="signUpForm.userEmail"
+        #userEmail="ngModel"
+        [ngClass]="{ 'is-invalid': userEmail.touched && userEmail.invalid}"
+        email
+        required
+      >
+
+      <div class="invalid-feedback" *ngIf="userEmail.touched && userEmail.invalid">
+        <div *ngIf="userEmail.errors.required">Email is required.</div>
+        <div *ngIf="userEmail.errors.email">Must be a valid email address.</div>
       </div>
-
-      <div class="formGroup">
-        <input type="password" class="form-control" placeholder="Password" #userPwd required>
-      </div>
-
-      <div class="formGroup">
-        <input type="button" class="btn btn-block btn-primary" value="Sign Up"
-          (click)="ngAuthService.SignUp(userEmail.value, userPwd.value)">
-      </div>
-
     </div>
 
-    <div class="redirectToLogin">
-      <span>Already have an account? <span class="redirect" routerLink="/sign-in">Log In</span></span>
+    <div class="formGroup">
+      <input 
+        type="password" 
+        name="userPwd"
+        class="form-control" 
+        placeholder="Password"
+        [(ngModel)]="signUpForm.userPwd"
+        #userPwd="ngModel"
+        [ngClass]="{ 'is-invalid': userPwd.touched && userPwd.invalid}"
+        required
+      >
+      <div class="invalid-feedback" *ngIf="userPwd.touched && userPwd.invalid">
+        <div *ngIf="userPwd.errors.required">Password is required.</div>
+      </div>
     </div>
+
+    <div class="formGroup">
+      <input type="button" class="btn btn-block btn-light-green" value="Sign Up"
+        (click)="submit(userEmail.value, userPwd.value)">
+    </div>
+    <div class="errors" *ngIf="error === true && errorMessage != ''">
+      <div>{{errorMessage}}</div>
+    </div>
+    
   </div>
+
+  <div class="redirectToLogin">
+    <span>Already have an account?<button class="btn btn-green-text" routerLink="/sign-in">Log In</button></span>
+  </div>
+</div>

@@ -29,6 +29,7 @@
           <div>
             <button 
               type="button" 
+              class="green"
               mat-button matStepperNext 
               (click)="ocrForm.get('formArray.0.documentTypeField').markAsTouched()">
                 Next
@@ -58,9 +59,16 @@
               Template is required.
           </mat-error>
           <div>
-            <button type="button" mat-button matStepperPrevious>Back</button>
             <button 
               type="button" 
+              class="green"
+              mat-button 
+              matStepperPrevious>
+                Back
+            </button>
+            <button 
+              type="button" 
+              class="green"
               mat-button matStepperNext 
               (click)="ocrForm.get('formArray.1.templateField').markAsTouched()">
                 Next
@@ -90,9 +98,16 @@
               PDF Scan Method is required.
           </mat-error>
           <div>
-            <button type="button" mat-button matStepperPrevious>Back</button>
             <button 
               type="button" 
+              class="green"
+              mat-button 
+              matStepperPrevious>
+                Back
+            </button>
+            <button 
+              type="button" 
+              class="green"
               mat-button matStepperNext 
               (click)="ocrForm.get('formArray.2.pdfExtractionMethodsField').markAsTouched()">
                 Next
@@ -118,10 +133,18 @@
             </mat-error>
             <div>
               <button 
-              type="button" 
-              mat-button matStepperNext 
-              (click)="ocrForm.get('formArray.3.apiKeyField').markAsTouched()">
-                Next
+                type="button" 
+                class="green"
+                mat-button 
+                matStepperPrevious>
+                  Back
+              </button>
+              <button 
+                type="button" 
+                class="green"
+                mat-button matStepperNext 
+                (click)="ocrForm.get('formArray.3.apiKeyField').markAsTouched()">
+                  Next
             </button>
             </div>
         </mat-step>
@@ -141,11 +164,11 @@
             <div>
               <h5>Folder/s Upload</h5>
               <input type="file" 
-              formControlName="filesUpload" 
-              webkitdirectory 
-              multiple 
-              value="Please select folder"
-              (change)="detectFiles($event)"
+                formControlName="filesUpload" 
+                webkitdirectory 
+                multiple 
+                value="Please select folder"
+                (change)="detectFiles($event)"
               />
             </div>
             
@@ -169,7 +192,21 @@
             </div>
             
             <div>
-              <button type="button" mat-button matStepperNext>Next</button>
+              <button 
+                type="button" 
+                class="green"
+                mat-button 
+                matStepperPrevious>
+                  Back
+              </button>
+              
+              <button 
+                type="button" 
+                class="green"
+                mat-button 
+                matStepperNext>
+                Next
+              </button>
             </div>
           </div>
     
@@ -194,10 +231,31 @@
             </mat-error>
             
             <div>
-              <button type="button" mat-button (click)="addUrlField()">Add URL field</button>
-              <button *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" type="button" mat-button (click)="removeUrlField()">Remove URL field</button>
               <button 
                 type="button" 
+                class="green"
+                mat-button 
+                (click)="addUrlField()">
+                  Add URL field
+              </button>
+              <button 
+                class="green"
+                *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" 
+                type="button" 
+                mat-button 
+                (click)="removeUrlField()">
+                  Remove URL field
+              </button>
+              <button 
+                type="button" 
+                class="green"
+                mat-button 
+                matStepperPrevious>
+                  Back
+              </button>
+              <button 
+                type="button"
+                class="green" 
                 mat-button matStepperNext 
                 (click)="ocrForm.get('formArray.4.filesUpload').markAsTouched()">
                   Next
@@ -213,9 +271,26 @@
           <ng-template matStepLabel>Done</ng-template>
           <p>Everything seems in order.</p>
           <div>
-            <button type="button" mat-button matStepperPrevious>Back</button>
-            <button type="button" mat-button (click)="stepper.reset()">Reset</button>
-            <button type="submit" mat-button>Scan</button>
+            <button 
+              type="button" 
+              class="green"
+              mat-button 
+              matStepperPrevious>
+                Back
+            </button>
+            <button 
+              type="button" 
+              class="green"
+              mat-button 
+              (click)="stepper.reset()">
+                Reset
+            </button>
+            <button 
+              type="submit" 
+              class="green"
+              mat-button>
+                Scan
+            </button>
           </div>
         </mat-step>
       </mat-vertical-stepper>

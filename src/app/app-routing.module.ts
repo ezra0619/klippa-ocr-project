@@ -16,7 +16,6 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], children: [
     {path: '', redirectTo: 'my-documents', pathMatch: 'full'},
     {path: 'my-documents', component: MyDocumentsComponent},
-    // {path: 'my-account', component: DocTemplateComponent},
     {path: 'scan-documents', component: OcrFormComponent}
   ]},
   {path: 'forgot-password', component: ForgotPasswordComponent},

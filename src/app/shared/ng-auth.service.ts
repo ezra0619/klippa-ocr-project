@@ -37,13 +37,11 @@ export class NgAuthService {
     }
   
     SignIn(email, password) {
-      this.afAuth.signInWithEmailAndPassword(email, password)
+      return this.afAuth.signInWithEmailAndPassword(email, password)
         .then((result) => {
           this.SetUserData(result.user).then(() => {
             this.router.navigate(['dashboard']);
           });
-        }).catch((error) => {
-          window.alert(error.message)
         })
     }
   
@@ -52,43 +50,23 @@ export class NgAuthService {
         .then((result) => {
           this.SendVerificationMail();
           this.SetUserData(result.user);
-        }).catch((error) => {
-          window.alert(error.message)
         })
     }
 
     SendVerificationMail() {
-        return this.afAuth.currentUser.then(u => u.sendEmailVerification())
-        .then(() => {
-          this.router.navigate(['email-verification']);
-        })
+      this.afAuth.currentUser.then(u => u.sendEmailVerification())
+      .then(() => {
+        this.router.navigate(['email-verification']);
+      })
     }    
   
     ForgotPassword(passwordResetEmail) {
       return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
-      .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
-      }).catch((error) => {
-        window.alert(error)
-      })
     }
   
     get isLoggedIn(): boolean {
       const user = JSON.parse(localStorage.getItem('user'));
       return (user !== null && user.emailVerified !== false) ? true : false;
-    }
-  
-    AuthLogin(provider) {
-      return this.afAuth.signInWithPopup(provider)
-      .then((result) => {
-         this.ngZone.run(() => {
-
-            this.router.navigate(['dashboard']);
-          })
-        this.SetUserData(result.user);
-      }).catch((error) => {
-        window.alert(error)
-      })
     }
   
     SetUserData(user) {
@@ -106,7 +84,7 @@ export class NgAuthService {
     }
    
     SignOut() {
-      return this.afAuth.signOut().then(() => {
+      this.afAuth.signOut().then(() => {
         localStorage.removeItem('user');
         this.router.navigate(['sign-in']);
       })

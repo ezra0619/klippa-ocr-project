@@ -1,25 +1,62 @@
 <div class="displayTableCell">
 
   <div class="authBlock">
-    <h3>Signin</h3>
+    <h3>Sign In</h3>
     <div class="formGroup">
-      <input type="text" class="form-control" placeholder="Username" #userName required>
+      <input 
+        type="email" 
+        name="userName" 
+        class="form-control" 
+        placeholder="Username" 
+        [(ngModel)]="signInForm.userName"
+        #userName="ngModel" 
+        [ngClass]="{ 'is-invalid': userName.touched && userName.invalid}"
+        email
+        required
+      >
+
+      <div class="invalid-feedback" *ngIf="userName.touched && userName.invalid">
+        <div *ngIf="userName.errors.required">Username is required.</div>
+        <div *ngIf="userName.errors.email">Must be a valid email address.</div>
+      </div>
     </div>
 
     <div class="formGroup">
-      <input type="password" class="form-control" placeholder="Password" #userPassword required>
+      <input 
+        type="password"
+        name="userPassword"
+        class="form-control" 
+        placeholder="Password"
+        [(ngModel)]="signInForm.userPassword"
+        #userPassword="ngModel"
+        [ngClass]="{ 'is-invalid': userPassword.touched && userPassword.invalid}"
+        required
+      >
+      <div class="invalid-feedback" *ngIf="userPassword.touched && userPassword.invalid">
+        <div *ngIf="userPassword.errors.required">Password is required.</div>
+      </div>
+    </div>
+    
+    <div class="formGroup">
+      <button 
+        class="btn btn-light-green btn-block"
+        (click)="submit(userName.value, userPassword.value)"
+        >Sign In
+      </button>
+
+      <div class="errors" *ngIf="error === true && errorMessage != ''">
+        <div>{{errorMessage}}</div>
+      </div>
+      
     </div>
 
-    <div class="formGroup">
-      <button (click)="ngAuthService.SignIn(userName.value, userPassword.value)" class="btn btn-primary btn-block">Sign In</button>
-    </div>
     <div class="forgotPassword">
-      <span routerLink="/forgot-password">Forgot Password?</span>
+      <button class="btn btn-dark-green btn-block" routerLink="/forgot-password">Forgot Password?</button>
     </div>
   </div>
 
   <div class="redirectToLogin">
-    <span>Not registered yet?<span class="redirect" routerLink="/sign-up"> Register</span></span>
+    <span>Not registered yet?<button class="btn btn-green-text" routerLink="/sign-up">Register here</button></span>
   </div>
 
 </div>

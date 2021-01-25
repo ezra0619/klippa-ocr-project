@@ -7,7 +7,7 @@
 }
 
 body {
-    font-size: 15px;
+    font-size: 14px;
     overflow: hidden;
     height: 100%;
 }
@@ -23,6 +23,19 @@ body {
 
 .hideContent {
     display: none;
+}
+.btn-green-text {
+    color: #0d6340;
+}
+
+.btn-light-green {
+    background-color: #00af91;
+    color: white;
+}
+
+.btn-dark-green {
+    background-color: #007965;
+    color: white;
 }
 
 @import "~bootstrap/dist/css/bootstrap.css";

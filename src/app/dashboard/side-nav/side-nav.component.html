@@ -1,8 +1,28 @@
-<div id="side-nav-container">
 
-    <div class="nav-buttons">
-        <button [routerLink]="'scan-documents'" class="btn btn-block btn-side-nav"><i class="bi bi-upc-scan"></i> Scan Documents</button>
-        <button [routerLink]="'my-documents'" class="btn btn-block btn-side-nav"><i class="bi bi-folder"></i> My Documents</button>
-        <button [routerLink] class="btn btn-block btn-side-nav"><i class="bi bi-gear-fill"></i> Settings</button>
-    </div>
+<div class="area">
+
 </div>
+<nav class="main-menu">
+    <ul>
+        <li>
+            <a routerLink="scan-documents">
+                <i class="fa fa-barcode fa-2x"></i>
+                <span class="nav-text">
+                    Scan Documents
+                </span>
+            </a>
+          
+        </li>
+        <li class="has-subnav">
+            <a routerLink="my-documents">
+                <i class="fa fa-home fa-2x"></i>
+                <span class="nav-text">
+                    My Documents
+                </span>
+            </a>
+            
+        </li>
+
+    </ul>
+
+</nav>

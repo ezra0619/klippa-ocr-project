@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
+import { NgAuthService } from 'src/app/shared/ng-auth.service';
 import { OcrParseDocDefaultService } from 'src/app/shared/ocr-parse-doc-default.service';
 import { OcrParseDocStructuredPDFService } from 'src/app/shared/ocr-parse-doc-structured-pdf.service';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';

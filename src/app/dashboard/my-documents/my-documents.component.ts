@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { DbScannedDocResponseModel } from 'src/app/shared/db-scanned-doc-response.model';
 import { FilteredScanObjModel } from 'src/app/shared/filteredScanObj.model';
-import { NgAuthService } from 'src/app/shared/ng-auth.service.ts.service';
+import { NgAuthService } from 'src/app/shared/ng-auth.service';
 
 @Component({
   selector: 'app-my-documents',

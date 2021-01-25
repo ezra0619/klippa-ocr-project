@@ -21,9 +21,9 @@
                         <mat-card-title>Template: {{scannedDoc.ocrTemplate}}</mat-card-title>
                     </mat-card-header>    
                     <mat-card-actions>
-                        <button mat-button color="primary" (click)="toggleScannedDoc(scannedDoc.docID)">View Document Information</button>
-                        <button mat-button color="primary" (click)="downloadObjectAsJson(scannedDoc, scannedDoc.docID)">Json Download</button>
-                        <a [href]="scannedDoc.url" target="_blank"><button mat-button color="primary">Document URL</button></a>
+                        <button mat-button class="green-theme" (click)="toggleScannedDoc(scannedDoc.docID)">View Document Information</button>
+                        <button mat-button class="green-theme" (click)="downloadObjectAsJson(scannedDoc, scannedDoc.docID)">Json Download</button>
+                        <a [href]="scannedDoc.url" target="_blank"><button mat-button class="green-theme">Document URL</button></a>
                     </mat-card-actions>
                 </div>
         
@@ -158,7 +158,10 @@
     
 </div>
 
-<div *ngIf="filteredObjects.length === 0 && isLoading === false && firstLoad === true" class="container-fluid img-container">
-    <img src="assets/missingFiles.svg" alt="no files found"/>
+<div 
+    *ngIf="filteredObjects.length === 0 && isLoading === false && firstLoad === true" 
+    class="missing-items-container">
+        <p>You have no items scanned.</p>
+        <img src="assets/missingFiles.svg" alt="no files found"/>
 
 </div>
