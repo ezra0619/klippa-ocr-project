@@ -173,7 +173,6 @@ export class OcrFormComponent implements OnInit {
     this.errors = [];
     this.successfulResponses = [];
 
-    console.log(this.currentFormValuesDinamic.typeOfTemplate);
     if(template === this.Templates.financialTemplate){
       this.currentFormValuesDinamic.acceptedExtension = ".png, .jpg, .pdf";
     }else if(template === this.Templates.structuredPDFTemplate){
