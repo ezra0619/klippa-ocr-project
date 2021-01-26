@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgAuthService } from 'src/app/shared/ng-auth.service';
+import { NgAuthService } from 'src/app/shared/authentication/ng-auth.service';
 
 export class SignInForm {
   public userName: string;

@@ -4,7 +4,7 @@
     // overflow-y: auto;
     height: 100%;
     .mat-card {
-        margin-bottom: 10px;
+      margin-bottom: 10px;
     }
     .mat-card-content-container{
         display: flex;
@@ -12,46 +12,30 @@
         justify-content: space-between;
 
         .content-titles {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
 
-            mat-card-title {
-                padding-bottom: 5px;;
-            }
-            mat-card-actions{
-                margin-bottom: 0;
-            }
+          mat-card-title {
+              padding-bottom: 5px;;
+          }
+          mat-card-actions{
+            margin-bottom: 0;
+            padding: 0 10px;
+          }
         }
 
-        .content-image {
-            height: 200px;
-            width: 250px;
-
-            img {
-                height: 100%;
-                width: 100%; 
-            }
-            mat-card-image {
-                margin: 0;
-                height: 100%;
-                width: 100%;
-            }
-
-            .mat-card-image:first-child {
-                margin: 0;
-            }
-        }
     }
     mat-card-title {
-        font-size: 16px;
+      font-size: 16px;
     }
 }
 
-.green-theme {
+.green-theme-button {
   color: #0d6340;
   font-weight: bold;
 }
+
 
 button:focus,
 button:active {
@@ -210,8 +194,8 @@ button:active {
   }
   
   .receipt-content .invoice-wrapper .line-items .total .extra-notes {
-    float: left;
-    width: 40%;
+    // float: left;
+    width: 100%;
     text-align: left;
     font-size: 13px;
     color: #7A7A7A;
@@ -261,8 +245,6 @@ button:active {
     text-align: center; 
   }
   
-  
-  
   .receipt-content .invoice-wrapper .line-items .print a i {
     margin-right: 3px;
     font-size: 14px; 
@@ -306,7 +288,7 @@ button:active {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #415AB5;
+    background-color: #0d6340;
     -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
             animation: sk-foldCubeAngle 2.4s infinite linear both;
     -webkit-transform-origin: 100% 100%;

@@ -9,15 +9,11 @@ export class OcrParseDocStructuredPDFService {
 
   constructor(private http: HttpClient) { }
 
-  readDocumentOCR(url: string, apiKey: string){
-
-    var base64StringDoc = btoa(url);
+  readDocumentOCR(document: File, apiKey: string){
 
     var formData: any = new FormData();
-    formData.append('document', base64StringDoc);
-    console.log(formData);
-    console.log(apiKey);
-
+    formData.append('document', document);
+    
     return this.http.post(
       "https://custom-ocr.klippa.com/api/v1/parseStructuredPDF?X-Auth-Key=" + apiKey, 
       formData

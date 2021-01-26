@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgAuthService } from 'src/app/shared/ng-auth.service';
+import { NgAuthService } from 'src/app/shared/authentication/ng-auth.service';
 
 @Component({
   selector: 'app-top-nav',
@@ -13,16 +13,4 @@ export class TopNavComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-  toggleSideNav(){
-    if(document.getElementById('side-nav-container').classList.contains('col-2')=== true){
-
-      document.getElementById('side-nav-container').classList.remove('col-2');
-      document.getElementById('side-nav-container').classList.add('hideContent');
-
-    }else if(document.getElementById('side-nav-container').classList.contains('hideContent')=== true){
-      document.getElementById('side-nav-container').classList.remove('hideContent');
-      document.getElementById('side-nav-container').classList.add('col-2');
-    };
-  }
 }

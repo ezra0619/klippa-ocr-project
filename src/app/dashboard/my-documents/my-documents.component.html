@@ -5,7 +5,7 @@
         <div class="sk-cube2 sk-cube"></div>
         <div class="sk-cube4 sk-cube"></div>
         <div class="sk-cube3 sk-cube"></div>
-      </div>
+    </div>
 </div>
 
 <div *ngIf="filteredObjects.length > 0 && isLoading === false && firstLoad === true" class="container-fluid">
@@ -14,21 +14,17 @@
         <mat-card>
 
             <div class="mat-card-content-container">
-                <div class="content-titles">
+                <div class="content-titles col">
                     <mat-card-header>
-                        <mat-card-title>Scan Date: {{scannedDoc.date | firestoreDate | date:'dd MMMM yyyy'}}</mat-card-title>
-                        <mat-card-title>Document ID: #{{ scannedDoc.docID}}</mat-card-title>
-                        <mat-card-title>Template: {{scannedDoc.ocrTemplate}}</mat-card-title>
+                        <mat-card-title><strong>Scan Date: </strong>{{scannedDoc.date | firestoreDate | date:'dd MMMM yyyy'}}</mat-card-title>
+                        <mat-card-title><strong>Document ID: #</strong>{{ scannedDoc.docID}}</mat-card-title>
+                        <mat-card-title><strong>Template: </strong>{{scannedDoc.ocrTemplate}}</mat-card-title>
                     </mat-card-header>    
                     <mat-card-actions>
-                        <button mat-button class="green-theme" (click)="toggleScannedDoc(scannedDoc.docID)">View Document Information</button>
-                        <button mat-button class="green-theme" (click)="downloadObjectAsJson(scannedDoc, scannedDoc.docID)">Json Download</button>
-                        <a [href]="scannedDoc.url" target="_blank"><button mat-button class="green-theme">Document URL</button></a>
+                        <button mat-button class="green-theme-button" (click)="toggleScannedDoc(scannedDoc.docID)">View Document Information</button>
+                        <button mat-button class="green-theme-button" (click)="downloadObjectAsJson(scannedDoc, scannedDoc.docID)">Json Download</button>
+                        <a [href]="scannedDoc.url" target="_blank"><button mat-button class="green-theme-button">Document URL</button></a>
                     </mat-card-actions>
-                </div>
-        
-                <div class="content-image">
-                    <img mat-card-image [src]="scannedDoc.url" [alt]="scannedDoc.url">
                 </div>
             </div>
             
@@ -111,10 +107,6 @@
                                         
                                     </div>
                                     <div class="total text-right">
-                                        <p class="extra-notes">
-                                            <strong>Raw Text Found</strong>
-                                            {{scannedDoc.customFields.raw_text}}
-                                        </p>
 
                                         <div class="field">
                                             Currency: 
@@ -139,6 +131,11 @@
                                         <div class="field">
                                             Total: 
                                             <span>{{scannedDoc.amountInformation.amountexvat | twoDecimalSumStr | number: '1.2-2'}} {{scannedDoc.amountInformation.currency}}</span>
+                                        </div>
+
+                                        <div class="extra-notes">
+                                            <strong>Raw Text Found</strong>
+                                            {{scannedDoc.customFields.raw_text}}
                                         </div>
 
                                     </div>

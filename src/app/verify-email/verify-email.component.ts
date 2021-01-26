@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgAuthService } from '../shared/ng-auth.service';
+import { NgAuthService } from '../shared/authentication/ng-auth.service';
 
 
 @Component({

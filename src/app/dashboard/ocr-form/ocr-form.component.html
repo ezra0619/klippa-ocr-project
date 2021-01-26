@@ -38,7 +38,7 @@
         </mat-step>
         
         <!-- //Template -->
-        <mat-step formGroupName="1" [stepControl]="formArray?.get([1])" errorMessage="Template is required.">
+        <mat-step *ngIf="currentFormValuesDinamic.typeOfDocumentsValue === 'Document'" formGroupName="1" [stepControl]="formArray?.get([1])" errorMessage="Template is required.">
           <ng-template matStepLabel>Template</ng-template>
           <label id="templates">What would you like to scan?</label>
           <mat-radio-group
@@ -157,12 +157,14 @@
             *ngIf="currentFormValuesDinamic.showFileUpload === false 
               && currentFormValuesDinamic.showUrlUpload === false" matStepLabel>
               File Upload
-            </ng-template>
+          </ng-template>
     
+          <!-- //SCENARIO 1.1 OPTION SELECTED FILES -->
           <div *ngIf="currentFormValuesDinamic.showFileUpload === true">
             <ng-template matStepLabel>File Upload</ng-template>
-            <div>
-              <h5>Folder/s Upload</h5>
+            <div class="file-or-folder-upload-method-container">
+              <!-- //The user can choose to select folder/s, file/s or both -->
+              <h5>Folder Upload</h5>
               <input type="file" 
                 formControlName="filesUpload" 
                 webkitdirectory 
@@ -171,9 +173,9 @@
                 (change)="detectFiles($event)"
               />
             </div>
-            
-            <div>
-              <h5>File/s Upload</h5>
+              <!-- //The user can choose to select folder/s, file/s or both -->
+            <div class="file-or-folder-upload-method-container">
+              <h5>File Upload</h5>
               <input 
               type="file" 
               formControlName="filesUpload" 
@@ -183,14 +185,21 @@
               (change)="detectFiles($event)"/>
             </div>
     
-            <div *ngIf="currentFormValuesDinamic.filesUploaded.length >= 1">
-              <p>Current extensions accepted: {{currentFormValuesDinamic.acceptedExtension}}</p>
-              <p>Current valid files selected:</p>
-              <p *ngFor="let validFile of currentFormValuesDinamic.filesUploaded">
-                {{validFile.name}}
-              </p>
+            <div class="file-uploaded-feedback-container">
+              <p><strong>Current extensions accepted:</strong> {{currentFormValuesDinamic.acceptedExtension}}</p>
+              <p><strong>Current valid files selected:</strong></p>
+
+              <ul>
+                <li *ngFor="let validFile of currentFormValuesDinamic.filesUploaded">{{validFile.name}}</li>
+              </ul>
             </div>
-            
+
+            <mat-error 
+              *ngIf="ocrForm.get('formArray.4.filesUpload').touched 
+              && currentFormValuesDinamic.filesUploaded.length == 0">
+                At least one valid file is required. No valid files were uploaded so far.
+            </mat-error>
+
             <div>
               <button 
                 type="button" 
@@ -203,49 +212,39 @@
               <button 
                 type="button" 
                 class="green"
+                [disabled]="currentFormValuesDinamic.filesUploaded.length >= 1 ? false : true" 
                 mat-button 
                 matStepperNext>
-                Next
+                  Next
               </button>
             </div>
           </div>
     
+
+          <!-- //SCENARIO 1.2 OPTION SELECTED URLS -->
           <div *ngIf="currentFormValuesDinamic.showUrlUpload === true" class="urlFieldContainer">
             <ng-template matStepLabel>File Upload</ng-template>
-            <mat-form-field 
-              *ngFor="let item of currentFormValuesDinamic.urlUploaded; let i = index">
+            <mat-form-field>
               <mat-label>URL</mat-label>
               <input 
                 type="text"
                 matInput 
-                placeholder="URL" 
+                placeholder="URL"
                 formControlName="filesUpload" 
-                (change)="detectURLs($event, i)"
-                [value]="item"
-                required>
+                [value]=""
+                (change)="detectURL($event)"
+                required
+              >
             </mat-form-field>
             <mat-error 
               *ngIf="!ocrForm.get('formArray.4.filesUpload').valid 
               && ocrForm.get('formArray.4.filesUpload').touched">
-                At least one file/URL is required.
+                <p>At least one URL is required.</p>
+                <p>Current extensions accepted: {{currentFormValuesDinamic.acceptedExtension}}</p>
+
             </mat-error>
             
             <div>
-              <button 
-                type="button" 
-                class="green"
-                mat-button 
-                (click)="addUrlField()">
-                  Add URL field
-              </button>
-              <button 
-                class="green"
-                *ngIf="currentFormValuesDinamic.urlUploaded.length > 1" 
-                type="button" 
-                mat-button 
-                (click)="removeUrlField()">
-                  Remove URL field
-              </button>
               <button 
                 type="button" 
                 class="green"
@@ -269,8 +268,8 @@
         <!-- //Done -->
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>
-          <p>Everything seems in order.</p>
-          <div>
+          <!-- <p>Everything seems in order.</p> -->
+          <div *ngIf="isLoading === false">
             <button 
               type="button" 
               class="green"
@@ -291,6 +290,28 @@
               mat-button>
                 Scan
             </button>
+          </div>
+
+          <mat-error class="errors-container" *ngIf="error === true && errors.length >= 1">
+            <p><strong>The following error/s occured:</strong></p>
+            <ul>
+              <li *ngFor="let error of errors">{{error}}</li>
+            </ul>
+          </mat-error>
+          <div class="successful-responses-container" *ngIf="successfulResponses.length >= 1">
+            <p><strong>The following files were successfully scanned:</strong></p>
+            <ul>
+              <li *ngFor="let successfulResponse of successfulResponses">{{successfulResponse}}</li>
+            </ul>
+            <p><strong>You can find them in the "My Documents" tab.</strong></p>
+          </div>
+          <div *ngIf="isLoading === true" class="loadingSpinner">
+            <div class="sk-folding-cube">
+              <div class="sk-cube1 sk-cube"></div>
+              <div class="sk-cube2 sk-cube"></div>
+              <div class="sk-cube4 sk-cube"></div>
+              <div class="sk-cube3 sk-cube"></div>
+            </div>
           </div>
         </mat-step>
       </mat-vertical-stepper>

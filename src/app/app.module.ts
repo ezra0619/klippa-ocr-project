@@ -18,10 +18,9 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
-import { NgAuthService } from './shared/ng-auth.service';
+import { NgAuthService } from './shared/authentication/ng-auth.service';
 import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
-import { HamburgerToggleDirective } from './shared/hamburger-toggle.directive';
 import { TopNavComponent } from './dashboard/top-nav/top-nav.component';
 import { OcrFormComponent } from './dashboard/ocr-form/ocr-form.component';
 
@@ -35,10 +34,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FirestoreDatePipe } from './shared/firestore-date.pipe';
-import { NiceLookingKeyPipe } from './shared/nice-looking-key.pipe';
-import { TwoDecimalSumStrPipe } from './shared/two-decimal-sum-str.pipe';
 import { MyDocumentsComponent } from './dashboard/my-documents/my-documents.component';
+import { DashboardPageNotFoundComponent } from './dashboard/dashboard-page-not-found/dashboard-page-not-found.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NiceLookingKeyPipe } from './shared/pipes/nice-looking-key.pipe';
+import { FirestoreDatePipe } from './shared/pipes/firestore-date.pipe';
+import { TwoDecimalSumStrPipe } from './shared/pipes/two-decimal-sum-str.pipe';
 
 
 @NgModule({
@@ -54,11 +55,12 @@ import { MyDocumentsComponent } from './dashboard/my-documents/my-documents.comp
     SignUpFormComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    HamburgerToggleDirective,
     OcrFormComponent,
     FirestoreDatePipe,
     NiceLookingKeyPipe,
-    TwoDecimalSumStrPipe
+    TwoDecimalSumStrPipe,
+    DashboardPageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

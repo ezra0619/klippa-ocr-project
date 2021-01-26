@@ -13,8 +13,6 @@ export class OcrParseDocDefaultService {
     var formData: any = new FormData();
     formData.append('url', url);
     formData.append('pdf_text_extraction', pdfTextExtractionMethod);
-    console.log(formData);
-    console.log(apiKey);
 
     return this.http.post(
       "https://custom-ocr.klippa.com/api/v1/parseDocument?X-Auth-Key=" + apiKey, 

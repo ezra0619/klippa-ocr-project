@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { DbScannedDocResponseModel } from 'src/app/shared/db-scanned-doc-response.model';
-import { FilteredScanObjModel } from 'src/app/shared/filteredScanObj.model';
-import { NgAuthService } from 'src/app/shared/ng-auth.service';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';;
+import { FilteredScanObjModel } from 'src/app/shared/models/filteredScanObj.model';
+import { NgAuthService } from 'src/app/shared/authentication/ng-auth.service';
+import { DbScannedDocResponseModel } from 'src/app/shared/models/db-scanned-doc-response.model';
 
 @Component({
   selector: 'app-my-documents',
@@ -194,21 +194,18 @@ export class MyDocumentsComponent implements OnInit, OnDestroy {
     // User is signed in.
     this.currentUserID = user.uid;
     this.basePath = '/' + this.currentUserID + '/files';
-    this.dbUserScanCollection = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs');
+    this.dbUserScanCollection = this.afDatabase.firestore.collection("users").doc(this.currentUserID).collection('scannedDocs').orderBy('date', "desc");
 
     this.dbUserScanCollection.get().then((querySnapshot) => { 
       querySnapshot.forEach((doc) => {
-          console.log(doc.id, "=>", doc.data());
           var newObject = {
             'docID': doc.id,
             'docData': doc.data()
           };  
-          console.log(newObject)
           this.scannedDocuments.push(newObject);
       })
     }).then(() => {
       for(let item of this.scannedDocuments){
-        console.log(item);
 
         this.responseCollection.docID = item.docID;
         this.responseCollection.url = item.docData.url;
@@ -217,34 +214,26 @@ export class MyDocumentsComponent implements OnInit, OnDestroy {
 
 
         for(let [key, value] of Object.entries(item.docData.data.data)){
-          // console.log(key);
           //first check, if it is not empty
           if(value != "" && value != null){
             if(this.documentInformationKeys.indexOf(key) > -1){
               this.responseCollection.documentInformation[key] = value;
-              // console.log(this.responseCollection.documentInformation[key]);
             }else if(this.paymentInformationKeys.indexOf(key) > -1){
               this.responseCollection.paymentInformation[key] = value;
-              // console.log(this.responseCollection.paymentInformation[key]);
             }else if(this.customerInformationKeys.indexOf(key) > -1){
               this.responseCollection.customerInformation[key] = value;
-              // console.log(this.responseCollection.customerInformation[key]);
             }else if(this.merchantInformationKeys.indexOf(key) > -1){
               this.responseCollection.merchantInformation[key] = value;
-              // console.log(this.responseCollection.merchantInformation[key]);
             }else if(this.customFieldsKeys.indexOf(key) > -1){
               this.responseCollection.customFields[key] = value;
-              // console.log(this.responseCollection.customFields[key]);
             }else if(this.amountInformationKeys.indexOf(key) > -1){
               this.responseCollection.amountInformation[key] = value;
-              // console.log(this.responseCollection.amountInformation[key]);
             }
     
           }
         }
 
         this.filteredObjects.push(this.responseCollection);
-        console.log(this.responseCollection);
         this.responseCollection = {
           docID: "",
           url: "",
@@ -309,15 +298,10 @@ export class MyDocumentsComponent implements OnInit, OnDestroy {
             "vatamount": 0
           }
         }
-        console.log(this.responseCollection);
       }
-      console.log(this.filteredObjects);
       
       this.isLoading = false;
       this.firstLoad = true;
-      console.log(this.isLoading);
-      console.log(this.firstLoad);
-      console.log(this.filteredObjects.length);
     });
   }
 
